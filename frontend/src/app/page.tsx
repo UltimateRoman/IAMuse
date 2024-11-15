@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
 import Link from "next/link";
@@ -44,19 +44,72 @@ const games = [
 ];
 
 const MainPage = () => {
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const router = useRouter();
   const handleJoinClick = (id: string) => {
     router.push(`/join/${id}`);
   };
-  // const handleCreateClick = () => {
-  //   router.push(`/challenge`);
-  // };
+  const handleCreateClick = async () => {
+    console.log("Invoking Create game API");
+    const response = await fetch(`http://localhost:3001/createGame`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameId: "123123123n213",
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    setAlertMessage(
+      `Game successfully created. Please check your game: ${data.gameId}`
+    );
+    console.log("Output : ", data);
+  };
   const handlePromoteClick = (id: string) => {
     router.push(`/promote/${id}`);
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+      {alertMessage && (
+        <div
+          className="fixed top-2 left-2 right-2 z-50 p-6 mb-4 text-green-900 font-bold border-2 border-green-200 rounded-lg bg-green-50 shadow-xl dark:bg-gray-800 dark:text-green-300 dark:border-green-600"
+          role="alert"
+        >
+          <div className="flex items-center">
+            <svg
+              className="flex-shrink-0 w-5 h-5 me-3 text-green-800 dark:text-green-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span className="sr-only">Success</span>
+            <h3 className="text-lg font-semibold text-green-800 dark:text-green-400">
+              Success!
+            </h3>
+          </div>
+          <div className="mt-2 mb-4 text-sm font-medium text-green-800 dark:text-green-200">
+            {alertMessage}
+          </div>
+          <div className="flex">
+            <button
+              type="button"
+              className="text-white bg-green-800 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              onClick={() => setAlertMessage(null)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="flex justify-between items-center mb-8 sm:mb-12">
           <DynamicWidget />
@@ -69,7 +122,10 @@ const MainPage = () => {
                 Chatbot
               </span>
             </Link>
-            <button className="relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+            <button
+              onClick={handleCreateClick}
+              className="relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+            >
               <span className="relative px-6 py-3 transition-all ease-in duration-75 bg-white hover:text-white rounded-full group-hover:bg-opacity-0">
                 Create a game
               </span>
