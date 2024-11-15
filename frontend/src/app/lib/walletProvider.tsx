@@ -1,14 +1,18 @@
 "use client";
 
+import { BiconomySmartAccountV2 } from "@biconomy/account";
 import { isEthereumWallet } from "@dynamic-labs/ethereum";
-import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
+import { useDynamicContext, useIsLoggedIn, UserProfile } from "@dynamic-labs/sdk-react-core";
 import React, { createContext, useEffect, useState } from "react";
-import { PublicClient, WalletClient } from "viem";
+import { WalletClient } from "viem";
+import { createSmartAccount } from "./biconomy";
 
 type WalletContextType = {
     isLoggedIn: boolean,
     isLoading: boolean,
-    walletClient?: WalletClient
+    walletClient?: WalletClient,
+    smartAccount?: BiconomySmartAccountV2,
+    user?: UserProfile,
 };
 
 export const WalletContext = createContext<WalletContextType>({
@@ -21,13 +25,16 @@ export function WalletProvider({children}: {children: React.ReactNode}) {
     const isLoggedIn = useIsLoggedIn();
     const [walletClient, setWalletClient] = useState<WalletClient>()
     const [isLoading, setIsLoading] = useState(true);
+    const [smartAccount, setSmartAccount] = useState<BiconomySmartAccountV2>();
+
 
     async function initWalletClient() {
-        if(!primaryWallet || !isEthereumWallet(primaryWallet)) return;
+        if(!primaryWallet || !isEthereumWallet(primaryWallet) || !isLoading) return;
 
         const walletClient = await primaryWallet.getWalletClient();
-        console.log(`Got wallet client: `, walletClient)
-        console.log(`Got user: `, user)
+        const newSmartAccount = await createSmartAccount(walletClient);
+        console.log("Got smart account address: ", await newSmartAccount.getAccountAddress())
+        setSmartAccount(newSmartAccount);
         setWalletClient(walletClient)
     }
 
@@ -44,7 +51,9 @@ export function WalletProvider({children}: {children: React.ReactNode}) {
         <WalletContext.Provider value={{
             isLoggedIn,
             isLoading,
-            walletClient
+            walletClient,
+            smartAccount,
+            user,
         }}>
             {children}
         </WalletContext.Provider>
