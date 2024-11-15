@@ -45,7 +45,7 @@ account:
 
 # Generate a new account
 account-generate:
-	@cast wallet import $(ACCOUNT_NAME) --private-key $$(cast wallet new | grep 'Private key:' | awk '{print $$3}')
+	@cast wallet import $(ACCOUNT_NAME) --private-key 0x09cc63c471fcd5ad1a3810e5a56f61bfe7fe1890dca8bd81e2a52439f3596042
 	@echo "Please update .env file with ETH_KEYSTORE_ACCOUNT=$(ACCOUNT_NAME)"
 
 # Import an existing account

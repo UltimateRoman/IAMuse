@@ -27,6 +27,7 @@ scroll = "https://rpc.scroll.io"
 pgn = "https://rpc.publicgoods.network"
 pgnTestnet = "https://sepolia.publicgoods.network"
 fhenixNitrogen = "https://api.nitrogen.fhenix.zone/"
+chilizSpicy = "https://spicy-rpc.chiliz.com/"
 
 [etherscan]
 polygonMumbai = { key = "${ETHERSCAN_API_KEY}" }
