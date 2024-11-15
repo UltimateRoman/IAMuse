@@ -2,20 +2,24 @@
 pragma solidity ^0.8.20;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IConditionalTokens } from "./interfaces/IConditionalTokens.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract GameFactory is Ownable {
     address public oracle;
     IERC20 public token;
+    IConditionalTokens public conditionalTokens;
 
     mapping(bytes32 => address) games;
 
     constructor(
         address _oracle, 
-        IERC20 _token
+        IERC20 _token,
+        IConditionalTokens _conditionalTokens
     ) Ownable(msg.sender) {
         oracle = _oracle;
         token = _token;
+        conditionalTokens = _conditionalTokens;
     }
 
     function setOracle(address _oracle) public onlyOwner {
@@ -24,6 +28,10 @@ contract GameFactory is Ownable {
 
     function setToken(IERC20 _token) public onlyOwner {
         token = _token;
+    }
+
+    function setConditionalTokens(IConditionalTokens _conditionalTokens) public onlyOwner {
+        conditionalTokens = _conditionalTokens;
     }
 
     function getGame(bytes32 gameId) public view returns (address) {
