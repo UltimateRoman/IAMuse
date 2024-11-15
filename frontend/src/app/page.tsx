@@ -45,7 +45,7 @@ const games = [
 const MainPage = () => {
   const router = useRouter();
   const handleJoinClick = (id: string) => {
-    router.push(`/terms/${id}`);
+    router.push(`/decide/${id}`);
   };
   const handleCreateClick = () => {
     router.push(`/challenge`);
