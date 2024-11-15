@@ -4,6 +4,7 @@ import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 
 const games = [
   {
@@ -58,6 +59,7 @@ const MainPage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="flex justify-between items-center mb-8 sm:mb-12">
+          <DynamicWidget />
           <div className="flex justify-between items-center">
             <Link
               href="/chat"

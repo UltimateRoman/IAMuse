@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dynamic-labs/ethereum": "^3.6.3",
+    "@dynamic-labs/ethers-v6": "^3.6.3",
+    "@dynamic-labs/sdk-react-core": "^3.6.3",
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "next": "14.2.16",
+    "pino-pretty": "^13.0.0",
     "react": "^18",
     "react-dom": "^18",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "viem": "^2.21.45"
   },
   "devDependencies": {
     "@types/node": "^20",
