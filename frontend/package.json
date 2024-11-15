@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@biconomy/account": "^4.5.7",
+    "@circles-sdk/adapter-ethers": "^0.14.0",
+    "@circles-sdk/sdk": "^0.14.0",
     "@dynamic-labs/ethereum": "^3.6.3",
     "@dynamic-labs/ethers-v6": "^3.6.3",
     "@dynamic-labs/sdk-react-core": "^3.6.3",
