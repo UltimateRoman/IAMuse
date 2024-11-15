@@ -45,10 +45,13 @@ const games = [
 const MainPage = () => {
   const router = useRouter();
   const handleJoinClick = (id: string) => {
-    router.push(`/decide/${id}`);
+    router.push(`/join/${id}`);
   };
-  const handleCreateClick = () => {
-    router.push(`/challenge`);
+  // const handleCreateClick = () => {
+  //   router.push(`/challenge`);
+  // };
+  const handlePromoteClick = (id: string) => {
+    router.push(`/promote/${id}`);
   };
 
   return (
@@ -101,12 +104,12 @@ const MainPage = () => {
                         />
                       </div>
                       <Button
-                      onClick={() => handleJoinClick(`${game.id}`)}
-                      variant="primary"
-                      className="hover:text-white relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
-                    >
-                      Promote a player
-                    </Button>
+                        onClick={() => handlePromoteClick(`${game.id}`)}
+                        variant="primary"
+                        className="hover:text-white relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+                      >
+                        Promote a player
+                      </Button>
                       <div className="flex flex-col items-center">
                         <img
                           src={`https://noun-api.com/beta/pfp?name=${game.challenger_2}`}
@@ -117,13 +120,13 @@ const MainPage = () => {
                     </>
                   ) : (
                     <div className="flex w-full items-center justify-center ">
-                    <Button
-                      onClick={() => handleJoinClick(`${game.id}`)}
-                      variant="primary"
-                      className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
-                    >
-                      Join game
-                    </Button>
+                      <Button
+                        onClick={() => handleJoinClick(`${game.id}`)}
+                        variant="primary"
+                        className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+                      >
+                        Join game
+                      </Button>
                     </div>
                   )}
                 </div>
