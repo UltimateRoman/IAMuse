@@ -6,6 +6,8 @@
   import { useRouter } from "next/navigation";
   import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
   import CirclesSDKContext from "./circles/circles";
+import { AvatarInterface } from "@circles-sdk/sdk";
+import { WalletContext } from "./lib/walletProvider";
 
   const games = [
     {
@@ -47,6 +49,8 @@
   const MainPage = () => {
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const { sdk } = useContext(CirclesSDKContext);
+    const [avatar, setAvatar] = useState<AvatarInterface>();
+    const {smartAccount, isLoading} = useContext(WalletContext);
 
     const router = useRouter();
     const handleJoinClick = (id: string) => {
@@ -75,11 +79,21 @@
     const handlePromoteClick = (id: string) => {
       router.push(`/promote/${id}`);
     };
+    
     const human = async () => {
-      if (sdk) {
-        console.log("Register human");
-        const avatar = await sdk.registerHuman();
-        console.log("avatar : ", avatar);
+      if (sdk && !avatar) {
+        if (!isLoading && smartAccount) {
+            const userAvatar = await sdk.getAvatar(await smartAccount.getAccountAddress(), true)
+            if (!userAvatar) {
+                console.log("Registering human");
+                const registeredAvatar = await sdk.registerHuman();
+                console.log("avatar : ", registeredAvatar);
+                setAvatar(registeredAvatar)
+                return;
+            }
+            console.log("Got avatar");
+            setAvatar(userAvatar)
+        }
       }
     };
 

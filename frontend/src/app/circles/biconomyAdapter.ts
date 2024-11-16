@@ -6,8 +6,8 @@ import {
 } from '@circles-sdk/adapter';
 import {BiconomySmartAccountV2 } from "@biconomy/account";
 import {ethers} from "ethers";
-import { baseSepolia } from 'viem/chains';
 import { sendTransaction } from '../lib/biconomy';
+import { chain } from '../lib/chain';
 
 export class BiconomySdkContractRunner implements SdkContractRunner {
   private smartAccount: BiconomySmartAccountV2;
@@ -70,7 +70,7 @@ export class BiconomySdkContractRunner implements SdkContractRunner {
       gasPrice: BigInt(userOpReceipt.receipt.effectiveGasPrice.toString()),
       data: '',
       value: tx.value && BigInt(tx.value.toString()),
-      chainId: baseSepolia.id,
+      chainId: chain.id,
     };
   };
 
@@ -114,7 +114,7 @@ export class BiconomyBatchRun implements BatchRun {
       gasPrice: BigInt(txReceipt.receipt.effectiveGasPrice.toString()),
       data: '',
       value: BigInt(0),
-      chainId: baseSepolia.id
+      chainId: chain.id
     };
   }
 }

@@ -39,10 +39,13 @@ export function WalletProvider({children}: {children: React.ReactNode}) {
 
         const walletClient = await primaryWallet.getWalletClient();
         setWalletClient(walletClient)
+
         const provider = await getWeb3Provider(primaryWallet)
         setEthersProvider(provider);
+
         const signer = await getSigner(primaryWallet)
         setEthersSigner(signer);
+
         const newSmartAccount = await createSmartAccount(walletClient);
         console.log("Got smart account address: ", await newSmartAccount.getAccountAddress())
         setSmartAccount(newSmartAccount);

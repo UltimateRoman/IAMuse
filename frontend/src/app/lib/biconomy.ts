@@ -13,9 +13,7 @@ import {
   PaymasterMode,
   UserOpReceipt,
 } from "@biconomy/account";
-import { baseSepolia } from "viem/chains";
-
-const chain = baseSepolia;
+import { chain } from "./chain";
 
 const bundler = new Bundler({
   bundlerUrl: process.env.NEXT_PUBLIC_BUILDER_URL || "",
