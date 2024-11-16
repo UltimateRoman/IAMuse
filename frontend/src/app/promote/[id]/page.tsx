@@ -115,18 +115,18 @@ const MainPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-white">
-        <div className="flex w-full justify-end items-center mb-8 sm:mb-12">
-          <div className="flex justify-end items-center">
-            <Link
-              href="/"
-              className="relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
-            >
-              <span className="relative px-6 py-3 transition-all ease-in duration-75 bg-white hover:text-white rounded-full group-hover:bg-opacity-0">
-                Home
-              </span>
-            </Link>
-          </div>
+      <div className="flex w-full justify-end items-center mb-8 sm:mb-12">
+        <div className="flex justify-end items-center">
+          <Link
+            href="/"
+            className="relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+          >
+            <span className="relative px-6 py-3 transition-all ease-in duration-75 bg-white hover:text-white rounded-full group-hover:bg-opacity-0">
+              Home
+            </span>
+          </Link>
         </div>
+      </div>
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {games ? (
@@ -137,18 +137,34 @@ const MainPage = () => {
               <CardHeader title={games.gameId}></CardHeader>
               <CardContent>
                 <p className="mb-4 text-gray-300">{games.metadataURI}</p>
-                <div className="flex flex-col items-center mt-4 space-y-4">
-                  <div className="flex justify-between items-center space-x-8">
-                    <div className="flex flex-col items-center font-extrabold">
-                      <p>Creativity : 100</p>
-                      <p>Color Theory : 3</p>
-                      <p>Past games won : 1</p>
+                <div className="flex flex-col items-center mt-6 space-y-6">
+                  <div className="flex justify-between items-center space-x-12">
+                    <div className="flex flex-col items-center text-center font-semibold text-gray-700">
+                      <div className="space-y-2">
+                        <p className="text-lg">
+                          🎨 Creativity:{" "}
+                          <span className="font-bold text-blue-500">100</span>
+                        </p>
+                        <p className="text-lg">
+                          🖍️ Color Theory:{" "}
+                          <span className="font-bold text-green-500">3</span>
+                        </p>
+                        <p className="text-lg">
+                          🏆 Past Games Won:{" "}
+                          <span className="font-bold text-yellow-500">1</span>
+                        </p>
+                      </div>
                       <img
                         src={`https://noun-api.com/beta/pfp?name=${challenger_1_Address}`}
                         alt="Avatar 1"
-                        className="w-14 h-14 rounded-full mb-2 border-2 border-blue-500"
+                        className="w-16 h-16 rounded-full mt-4 mb-2 border-4 border-blue-500 shadow-lg"
                       />
-                      Your Position {conditionalAddress1} USDX
+                      <p className="mt-2 text-sm text-gray-600">
+                        Your Position:{" "}
+                        <span className="font-bold text-indigo-600">
+                          {conditionalAddress1} USDX
+                        </span>
+                      </p>
                     </div>
                     <div className="flex items-center">
                       <input
@@ -159,10 +175,21 @@ const MainPage = () => {
                         className="w-full max-w-sm px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
-                    <div className="flex flex-col items-center font-extrabold">
-                      <p>Creativity : 120</p>
-                      <p>Color Theory : 3</p>
-                      <p>Past games won : 2</p>
+                    <div className="flex flex-col items-center text-center font-semibold text-gray-700">
+                      <div className="space-y-2">
+                        <p className="text-lg">
+                          🎨 Creativity:{" "}
+                          <span className="font-bold text-blue-500">100</span>
+                        </p>
+                        <p className="text-lg">
+                          🖍️ Color Theory:{" "}
+                          <span className="font-bold text-green-500">3</span>
+                        </p>
+                        <p className="text-lg">
+                          🏆 Past Games Won:{" "}
+                          <span className="font-bold text-yellow-500">1</span>
+                        </p>
+                      </div>
                       <img
                         src={`https://noun-api.com/beta/pfp?name=${challenger_2_Address}`}
                         alt="Avatar 2"

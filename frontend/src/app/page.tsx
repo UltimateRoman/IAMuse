@@ -231,7 +231,7 @@ const MainPage = () => {
                     <CardHeader title={game.gameId}></CardHeader>
 
                     <CardContent>
-                      <p className="mb-4 text-gray-400">{game.metadataURI}</p>
+                      <p className="mb-4 text-gray-400 break-words">Game ID : {game.gameId}</p>
                       <div className="flex justify-between space-x-4 items-center">
                         {game.status == 1 ? (
                           <>
