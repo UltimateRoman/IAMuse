@@ -103,6 +103,7 @@ const MainPage = () => {
       hash: tx2,
     });
     console.log(transaction2);
+    setAlertMessage("Funds have been successfully transferred to your account!");
     // console.log("data : ", tx2);
   };
 
