@@ -58,13 +58,24 @@ function scheduleApiCall(gameId: string) {
     });
 }
 
-app.post('/createGame', (req, res) => {
+app.post('/createGame', async (req, res) => {
     const { gameId } = req.body;
     console.log(req.body);
+
+    const response = await axios.get('https://wapo-testnet.phala.network/ipfs/Qmc7zrN4Pen3ML7FHfoBEZpAosUjtK3fKBvh81ndbTeDy7', {
+        params: {
+            key: '6742e16566409f95',
+            type: 'challenge'
+        }
+    });
+
+    const game = response.data;
+    
+
     const timestamp = new Date().toISOString();
-    insertGame(gameId, timestamp);
-    scheduleApiCall(gameId);
-    res.json({ gameId: gameId });
+    insertGame(game.gameId, timestamp);
+    scheduleApiCall(game.gameId);
+    res.json({ gameId: game.gameId });
 });
 
 export default app;

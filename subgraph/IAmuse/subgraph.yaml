@@ -1,0 +1,29 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: GameFactory
+    network: chiliz-testnet
+    source:
+      address: "0x38c84b0c4561bee70b8e028561fb664543e1ad40"
+      abi: GameFactory
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - GameCreated
+        - OwnershipTransferred
+      abis:
+        - name: GameFactory
+          file: ./abis/GameFactory.json
+      eventHandlers:
+        - event: GameCreated(bytes32,address,string)
+          handler: handleGameCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/game-factory.ts
