@@ -35,7 +35,6 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     enum GameStatus {
         CREATED,
         BIDDING,
-        STARTED,
         FINISHED
     }
 
@@ -44,20 +43,6 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     modifier onlyOracle() {
         if (msg.sender != oracle) {
             revert NotOracle();
-        }
-        _;
-    }
-
-    modifier gameStarted() {
-        if (status != GameStatus.STARTED) {
-            revert NotStarted();
-        }
-        _;
-    }
-
-    modifier gameNotStarted() {
-        if (status == GameStatus.STARTED) {
-            revert GameHasStarted();
         }
         _;
     }
@@ -78,12 +63,10 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
 
     event PreparedForBidding(bytes32 gameId, uint256 outcomeSlotCount);
     event PlacedBet(bytes32 gameId, address wagerer, uint256 playerId, uint256 amount);
-    event GameStarted(bytes32 gameId);
     event GameFinished(bytes32 gameId, uint256 winnerId);
     event RedeemedWinnings(bytes32 gameId, address wagerer, uint256 amount);
 
     error NotOracle();
-    error NotStarted();
     error NotFinished();
     error GameHasStarted();
     error NotInBidding();
@@ -168,12 +151,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         emit PlacedBet(gameId, msg.sender, playerId, betAmount);
     }
 
-    function startGame() external inBidding onlyRole(OPERATOR_ROLE) {
-        status = GameStatus.STARTED;
-        emit GameStarted(gameId);
-    }
-
-    function finishGame(uint256 _winnerId, address _winnerAddress) external gameStarted onlyOracle {
+    function finishGame(uint256 _winnerId, address _winnerAddress) external inBidding onlyOracle {
         if (_winnerId >= numberOfOutcomes) {
             revert InvalidWinner();
         }

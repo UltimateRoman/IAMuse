@@ -29,14 +29,14 @@ contract GameFactory is Ownable {
 
     constructor(
         address _oracle, 
-        IERC20 _token,
-        IConditionalTokens _conditionalTokens,
-        Game _gameTemplate
+        address _token,
+        address _conditionalTokens,
+        address _gameTemplate
     ) Ownable(msg.sender) {
         oracle = _oracle;
-        token = _token;
-        conditionalTokens = _conditionalTokens;
-        gameTemplate = address(_gameTemplate);
+        token = IERC20(_token);
+        conditionalTokens = IConditionalTokens(_conditionalTokens);
+        gameTemplate = _gameTemplate;
     }
 
     function createGame(bytes32 gameId, string calldata metadataURI) external notCreated(gameId) {
