@@ -1,11 +1,12 @@
+import { Entity } from "@graphprotocol/graph-ts"
 import {
   GameCreated as GameCreatedEvent,
   OwnershipTransferred as OwnershipTransferredEvent
 } from "../generated/GameFactory/GameFactory"
 import { GameCreated, OwnershipTransferred } from "../generated/schema"
 
-import {Game} from '../generated/templates'
-import {PreparedForBidding as PreparedForBiddingEvent} from '../generated/templates/Game/Game'
+import {GameInst} from '../generated/templates'
+import {PreparedForBidding as PreparedForBiddingEvent} from '../generated/templates/GameInst/Game'
 
 export function handleGameCreated(event: GameCreatedEvent): void {
   let entity = new GameCreated(
@@ -19,7 +20,7 @@ export function handleGameCreated(event: GameCreatedEvent): void {
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
 
-  Game.create(event.params.gameId);
+  GameInst.create(event.params.game);
   entity.status=0;
   entity.save()
 }
@@ -27,14 +28,12 @@ export function handleGameCreated(event: GameCreatedEvent): void {
 export function handlePrepareForBidding(
   event: PreparedForBiddingEvent
 ): void {
-  let entity = new Game.load()
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
+  let entity = GameCreated.load(event.params.gameId);
+  if (entity == null) {
+    entity = new GameCreated(event.params.gameId)
+  }
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
+  entity.status=1;
   entity.save()
 }
 

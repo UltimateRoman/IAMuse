@@ -8,7 +8,7 @@ dataSources:
     name: GameFactory
     network: chiliz-testnet
     source:
-      address: "0xcf0daadbd93be768291d3a6c556dfee26e40af8e"
+      address: "0x077fd4c0563b9d01a009c84564c31459bc18dccb"
       abi: GameFactory
       startBlock: 19373830
     mapping:
@@ -26,7 +26,7 @@ dataSources:
           handler: handleGameCreated
       file: ./src/game-factory.ts
 templates:
-  - name: Game
+  - name: GameInst
     kind: ethereum/contract
     network: chiliz-testnet
     source:
@@ -37,10 +37,10 @@ templates:
       language: wasm/assemblyscript
       file: ./src/game-factory.ts
       entities:
-        - Game
+        - PreparedForBidding
       abis:
         - name: Game
           file: ./abis/Game.json
       eventHandlers:
-        - event: PreparedForBidding(uint256)
+        - event: PreparedForBidding(bytes32,uint256)
           handler: handlePrepareForBidding
