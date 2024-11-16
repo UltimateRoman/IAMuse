@@ -112,6 +112,11 @@ app.post('/createGame', async (req, res) => {
     res.json({ gameId: game.gameId });
 });
 
+app.post('/finishGame', async (req, res) => {
+    const { gameAddress, winnerAddress, winnerId, chainId } = req.body;
+    await callFinishGame(winnerId, winnerAddress, gameAddress, chainId)
+    res.json({ gameAddress: gameAddress });
+});
 
 function sleep(ms:number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -191,5 +196,30 @@ async function callStartBidding(gameId: string, gameAddress:string, chainId: num
     }
 }
 
+
+async function callFinishGame(winnerId: number, winnerAddress:string, gameAddress:string, chainId: number) {
+    try {
+        // Setup the provider and wallet (replace with your actual RPC URL and private key)
+        const provider = new ethers.JsonRpcProvider(process.env.CHILLIZ_RPC_URL); //TODO: Add Flow RPC URL
+        const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY||'', provider); // Replace 'YOUR_PRIVATE_KEY' with your private key
+
+        // Define the contract's ABI and address
+        const contractGameAddress = gameAddress||''; // Replace with the smart contract's address
+        
+
+        // Create a contract instance
+        const contract = new ethers.Contract(contractGameAddress, contractGameABI, wallet);
+
+        // Call the function on the smart contract
+        const tx = await contract.finishGame(2, winnerAddress);
+        console.log(`Transaction submitted: ${tx.hash}`);
+
+        // Wait for the transaction to be confirmed
+        await tx.wait();
+        console.log('Transaction confirmed!');
+    } catch (error) {
+        console.error('Failed to call the smart contract:', error);
+    }
+}
 
 export default app;
