@@ -99,10 +99,7 @@ app.post('/createGame', async (req, res) => {
     
 
     const timestamp = new Date().toISOString();
-    await sleep(10000);
-    let gameAddress = await getGameAddress(game.gameId)
-    if(gameAddress == "0x0000000000000000000000000000000000000000")
-       gameAddress = await getGameAddress(game.gameId)
+    const gameAddress = await getGameAddress(game.gameId)
 
     insertGame(game.gameId, timestamp, gameAddress);
     scheduleApiCall(game.gameId, gameAddress);
