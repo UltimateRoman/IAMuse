@@ -10,7 +10,7 @@ import { gql } from "@apollo/client";
 import CirclesSDKContext from "./circles/circles";
 import { AvatarInterface } from "@circles-sdk/sdk";
 import { WalletContext } from "./lib/walletProvider";
-import { addPlayer } from "./lib/transaction";
+import { addPlayer, publicClient } from "./lib/transaction";
 import GameABI from "../../../foundry/deployments/deployedContracts";
 import { WalletClient, createWalletClient, custom } from "viem";
 import { spicy } from "viem/chains";
@@ -80,14 +80,30 @@ const MainPage = () => {
   const redeem = async (id: string) => {
     // console.log("Contract address : ", id);
     if (!walletClient) return;
-    const data = await walletClient.writeContract({
+
+    const tx1 = await walletClient.writeContract({
+        address: GameABI["88882"].ConditionalTokens.address,
+        abi: GameABI["88882"].ConditionalTokens.abi,
+        functionName: "setApprovalForAll",
+        args: [id as `0x{string}`, true],
+    } as any);
+
+    const transaction1 = await publicClient.waitForTransactionReceipt({
+        hash: tx1,
+    });
+    console.log(transaction1)
+    const tx2 = await walletClient.writeContract({
       //@ts-ignore
       address: id,
       abi: GameABI["88882"].Game.abi,
       functionName: "redeemWinnings",
       args: [],
     });
-    console.log("data : ", data);
+    const transaction2 = await publicClient.waitForTransactionReceipt({
+        hash: tx2,
+    });
+    console.log(transaction2)
+    // console.log("data : ", tx2);
   };
 
   const human = async () => {
