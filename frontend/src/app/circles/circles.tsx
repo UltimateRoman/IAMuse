@@ -35,6 +35,16 @@ interface CirclesSDKProps {
     children: React.ReactNode;
 }
 
+export const GnosisChainConfig: CirclesConfig = {
+    circlesRpcUrl: "https://static.94.138.251.148.clients.your-server.de/rpc/",
+    v1HubAddress: "0x29b9a7fbb8995b2423a71cc17cf9810798f6c543",
+    v2HubAddress: "0x3D61f0A272eC69d65F5CFF097212079aaFDe8267",
+    migrationAddress: "0x28141b6743c8569Ad8B20Ac09046Ba26F9Fb1c90",
+    nameRegistryAddress: "0x8D1BEBbf5b8DFCef0F7E2039e4106A76Cb66f968",
+    profileServiceUrl: "https://static.94.138.251.148.clients.your-server.de/profiles/",
+    baseGroupMintPolicy: "0x79Cbc9C7077dF161b92a745345A6Ade3fC626A60",
+};
+
 export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
     const {smartAccount, isLoading, ethersProvider} = useContext(WalletContext);
     const [sdk, setSdk] = useState<any|null>(null);
@@ -74,7 +84,7 @@ export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
             const circlesAddress = adapter.address;
             setCirclesAddress(circlesAddress); // Set the address
             
-            const sdk = new Sdk(adapter, chiadoConfig); // Pass the initialized adapter to the SDK
+            const sdk = new Sdk(adapter, GnosisChainConfig); // Pass the initialized adapter to the SDK
             console.log(sdk);
             setSdk(sdk); // Set the SDK in the state
             setIsConnected(true); // Update connection status
