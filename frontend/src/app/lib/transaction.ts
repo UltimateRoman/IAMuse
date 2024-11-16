@@ -55,14 +55,14 @@ export async function placeWagerWalletClient(
   } as any);
 }
 
-export async function approve(walletClient: WalletClient, betAmount: number) {
+export async function approve(gameAddress: Hex, walletClient: WalletClient, betAmount: number) {
   console.log("betAmount : ", betAmount);
   await walletClient.writeContract({
-    address: "0x3c0b62de72281f462f05f489154a979fbbb842c9" as Hex,
+    address: GameABI["88882"].Token.address,
     abi: GameABI["88882"].Token.abi as Abi,
     functionName: "approve",
     args: [
-      "0x26a1253fb1b881554eb95cb487d1a5ee5593ec0b",
+      gameAddress,
       BigInt(betAmount * 10 ** 18),
     ],
   } as any);

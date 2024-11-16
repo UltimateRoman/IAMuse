@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
@@ -62,7 +61,7 @@ const MainPage = () => {
   const handlePromoterChallenger = async  (challengerId: number) => {
       // if (!wagerSmartAccount) return;
       if (!walletClient) return;
-      await approve(walletClient, wagerAmount)
+      await approve(id as Hex, walletClient, wagerAmount)
       await placeWagerWalletClient(id as Hex, walletClient, challengerId, wagerAmount)
   }
 
