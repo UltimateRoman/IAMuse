@@ -187,8 +187,12 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         emit RedeemedWinnings(gameId, msg.sender, balance);
     }
 
-    function setMetadataURI(string calldata _metadataURI) external {
+    function setMetadataURI(string calldata _metadataURI) external onlyRole(OPERATOR_ROLE) {
         metadataURI = _metadataURI;
+    }
+
+    function withdraw() external gameFinished onlyRole(OPERATOR_ROLE) {
+        token.transfer(msg.sender, token.balanceOf(address(this)));
     }
 
     function getConditionalTokenBalance(
