@@ -1,18 +1,33 @@
+/* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
 import { frames } from "@/app/frames/frames";
 
-const handleRequest = frames(async (ctx) => {
+const handler = frames(async (ctx) => {
   let iAm: string | undefined;
- 
+  const gameId = ctx.searchParams.id;
+
   if (ctx.message) {
     iAm = (await ctx.message.walletAddress()) ?? "anonymous";
   }
- 
+  console.log(`Current user: ${iAm}`);
   return {
-    image: <span>{iAm ? `I am ${iAm}` : `Click the button`}</span>,
-    buttons: [<Button action="post">Who am I?</Button>],
+    image:
+      "https://static.vecteezy.com/system/resources/previews/022/076/846/non_2x/children-sit-at-table-doing-joint-creativity-draw-pictures-using-watercolor-or-gouache-boy-and-girl-with-brushes-in-their-hands-participate-in-kids-creativity-competition-vector.jpg",
+    imageOptions: {
+      headers: {
+        "Cache-Control": "max-age=1",
+      },
+    },
+    buttons: [
+      <Button
+        action="post"
+        target={{ pathname: "/gameDetails", query: { id: gameId } }}
+      >
+        Lets go!!
+      </Button>,
+    ],
   };
 });
- 
-export const GET = handleRequest;
-export const POST = handleRequest;
+
+export const GET = handler;
+export const POST = handler;

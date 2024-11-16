@@ -48,7 +48,6 @@ function scheduleApiCall(gameId: string) {
                     // await axios.post('http://example.com/another-api', { gameId: gameId });
                     console.log(`Called another API for gameId: ${gameId}`);    
                 }
-            }
 
         } catch (error) {
             console.error('Failed to call another API:', error);
