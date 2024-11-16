@@ -71,6 +71,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
 
     event PreparedForBidding(uint256 outcomeSlotCount);
     event PlacedBet(address wagerer, uint256 playerId, uint256 amount);
+    event GameStarted();
 
     error NotOracle();
     error NotStarted();
@@ -156,8 +157,25 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         emit PlacedBet(msg.sender, playerId, betAmount);
     }
 
+    function startGame() external inBidding onlyRole(OPERATOR_ROLE) {
+        status = GameStatus.STARTED;
+        emit GameStarted();
+    }
+
     function setMetadataURI(string calldata _metadataURI) external {
         metadataURI = _metadataURI;
+    }
+
+    function getConditionalTokenBalance(
+        uint256 playerId, 
+        address account
+    ) public view returns (uint256) {
+        uint256 positionId = positionIds[playerId];
+        return conditionalTokens.balanceOf(account, positionId);
+    }
+
+    function getBetAmount(address account) public view returns (uint256) {
+        return bets[account];
     }
 
     function onERC1155Received(
