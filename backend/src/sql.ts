@@ -12,6 +12,7 @@ export async function initializeDatabase() {
     CREATE TABLE IF NOT EXISTS games (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       gameId TEXT,
+      gameFinalized INTEGER DEFAULT 0,
       gameCreateTime TEXT
     )
   `);
@@ -28,3 +29,8 @@ export async function getGames() {
     return games;
 }
 
+export async function getGameFinalizedStatus(gameId: string) {
+    const db = await dbPromise;
+    const game = await db.get('SELECT gameFinalized FROM games WHERE gameId = ?', [gameId]);
+    return game ? game.gameFinalized : null;
+}
