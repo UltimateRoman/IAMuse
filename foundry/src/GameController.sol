@@ -38,4 +38,8 @@ contract GameController {
         }
         return cids;
     }
+
+    function getPlayerCid(bytes32 gameId, address player) public view returns (string memory) {
+        return games[gameId].cids[player];
+    }
 }

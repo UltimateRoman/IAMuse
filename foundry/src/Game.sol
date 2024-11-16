@@ -9,6 +9,7 @@ import { AccessControlUpgradeable } from "@openzeppelin/contracts-upgradeable/ac
 import { IConditionalTokens } from "./interfaces/IConditionalTokens.sol";
 
 contract Game is IERC1155Receiver, AccessControlUpgradeable {
+    uint256 public winnerId;
     bytes32 public gameId;
     address public oracle;
     string public metadataURI;
@@ -72,6 +73,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     event PreparedForBidding(uint256 outcomeSlotCount);
     event PlacedBet(address wagerer, uint256 playerId, uint256 amount);
     event GameStarted();
+    event GameFinished(uint256 winnerId);
 
     error NotOracle();
     error NotStarted();
@@ -79,6 +81,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     error GameHasStarted();
     error NotInBidding();
     error InvalidOutcomeSlotCount();
+    error InvalidWinner();
 
     constructor() {
         _disableInitializers();
@@ -160,6 +163,22 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     function startGame() external inBidding onlyRole(OPERATOR_ROLE) {
         status = GameStatus.STARTED;
         emit GameStarted();
+    }
+
+    function finishGame(uint256 _winnerId) external gameStarted onlyOracle {
+        if (_winnerId >= numberOfOutcomes) {
+            revert InvalidWinner();
+        }
+
+        winnerId = _winnerId;
+        uint256[] memory payouts = new uint256[](numberOfOutcomes);
+        payouts[winnerId] = 1;
+        conditionalTokens.reportPayouts(gameId, payouts);
+
+        conditionalTokens.redeemPositions(token, bytes32(0), conditionId, partitions);
+
+        status = GameStatus.FINISHED;
+        emit GameFinished(winnerId);
     }
 
     function setMetadataURI(string calldata _metadataURI) external {
