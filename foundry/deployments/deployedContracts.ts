@@ -541,6 +541,13 @@ const deployedContracts = {
           stateMutability: "view",
         },
         {
+          type: "function",
+          name: "withdraw",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
           type: "event",
           name: "GameFinished",
           inputs: [
@@ -784,7 +791,26 @@ const deployedContracts = {
           inputs: [],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        onERC1155BatchReceived:
+          "lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol",
+        onERC1155Received:
+          "lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol",
+        supportsInterface:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        DEFAULT_ADMIN_ROLE:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        getRoleAdmin:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        grantRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        hasRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        renounceRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        revokeRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+      },
     },
     Token: {
       address: "0x842562a3099ffc7cebd4188c8853b6a29bb2fdea",
@@ -2822,7 +2848,13 @@ const deployedContracts = {
           ],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+      },
     },
   },
   31337: {
@@ -4862,12 +4894,18 @@ const deployedContracts = {
           ],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+      },
     },
   },
   88882: {
     Game: {
-      address: "0xac8d7933c8be0d11e3a403db38c118e7c5e4c9d5",
+      address: "0x5633b4da9026c62010e580585a168bd286744b6c",
       abi: [
         {
           type: "constructor",
@@ -5402,6 +5440,13 @@ const deployedContracts = {
           stateMutability: "view",
         },
         {
+          type: "function",
+          name: "withdraw",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
           type: "event",
           name: "GameFinished",
           inputs: [
@@ -5645,10 +5690,29 @@ const deployedContracts = {
           inputs: [],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        onERC1155BatchReceived:
+          "lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol",
+        onERC1155Received:
+          "lib/openzeppelin-contracts/contracts/token/ERC1155/IERC1155Receiver.sol",
+        supportsInterface:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        DEFAULT_ADMIN_ROLE:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        getRoleAdmin:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        grantRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        hasRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        renounceRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+        revokeRole:
+          "lib/openzeppelin-contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol",
+      },
     },
     Token: {
-      address: "0x3c0b62de72281f462f05f489154a979fbbb842c9",
+      address: "0x8d7ef46581d7c6efa7b3d2d99d73d778c5357ce4",
       abi: [
         {
           type: "constructor",
@@ -6484,7 +6548,7 @@ const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0x11eaba3d87d927ce83a1fdd3feb49f54e4255471",
+      address: "0x19a8cc01bdb8202744e7a9c6f4e43fe18512cdd6",
       abi: [
         {
           type: "constructor",
@@ -7401,7 +7465,7 @@ const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0x1f8dffd9cdac3f6259e690d74add7b298f75e431",
+      address: "0x50320f9b3bf58f12d3e0963277257ca92d5ac84d",
       abi: [
         {
           type: "constructor",
@@ -7683,7 +7747,13 @@ const deployedContracts = {
           ],
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        renounceOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+        transferOwnership:
+          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
+      },
     },
   },
   10200: {
