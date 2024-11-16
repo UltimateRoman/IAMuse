@@ -33,7 +33,7 @@ const MainPage = () => {
     });
     // console.log("Games: ", data);
     //@ts-ignore
-    setGames(data.gameCreateds.find((game) => game.gameId === id));
+    setGames(data.gameCreateds.find((game) => game.game === id));
     // console.log(data.gameCreateds.find((game) => game.gameId === id))
   }
   console.log("id : ", id);

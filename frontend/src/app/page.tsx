@@ -172,7 +172,7 @@ const MainPage = () => {
                         />
                       </div>
                       <Button
-                        onClick={() => handlePromoteClick(`${game.gameId}`)}
+                        onClick={() => handlePromoteClick(`${game.game}`)}
                         variant="primary"
                         className="hover:text-white relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
                       >
