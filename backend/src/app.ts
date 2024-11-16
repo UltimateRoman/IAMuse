@@ -16,14 +16,6 @@ app.get('/', (req, res) => {
     res.send('Hello are you amused?');
 });
 
-app.post('/createGame', (req, res) => {
-    const { gameId } = req.body;
-    console.log(req.body);
-    const timestamp = new Date().toISOString();
-    insertGame(gameId, timestamp);
-    res.json({ gameId: gameId });
-});
-
 app.get('/games', async (req, res) => {
     try {
         const games = await getGames(); // Assuming getGames is a function that retrieves the list of games from the database
