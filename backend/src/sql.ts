@@ -13,14 +13,15 @@ export async function initializeDatabase() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       gameId TEXT,
       gameFinalized INTEGER DEFAULT 0,
-      gameCreateTime TEXT
+      gameCreateTime TEXT,
+      gameAddress TEXT
     )
   `);
 }
 
-export async function insertGame(gameId: string, gameCreateTime: string) {
+export async function insertGame(gameId: string, gameCreateTime: string, gameAddress: string) {
   const db = await dbPromise;
-  await db.run('INSERT INTO games (gameId, gameCreateTime, gameFinalized) VALUES (?, ?, ?)', [gameId, gameCreateTime, 0]);
+  await db.run('INSERT INTO games (gameId, gameCreateTime, gameFinalized, gameAddress) VALUES (?, ?, ?, ?)', [gameId, gameCreateTime, 0, gameAddress]);
 }
 
 export async function getGames() {
@@ -33,4 +34,10 @@ export async function getGameFinalizedStatus(gameId: string) {
     const db = await dbPromise;
     const game = await db.get('SELECT gameFinalized FROM games WHERE gameId = ?', [gameId]);
     return game ? game.gameFinalized : null;
+}
+
+export async function setGameFinalizedStatus(gameId: string) {
+  const db = await dbPromise;
+  const game = await db.get('UPDATE games SET gameFinalized = 1 WHERE gameId = ?', [gameId]);
+  return game ? game.gameFinalized : null;
 }
