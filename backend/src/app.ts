@@ -99,7 +99,7 @@ app.post('/createGame', async (req, res) => {
     
 
     const timestamp = new Date().toISOString();
-    await sleep(5000);
+    await sleep(10000);
     const gameAddress = await getGameAddress(game.gameId)
 
     insertGame(game.gameId, timestamp, gameAddress);
