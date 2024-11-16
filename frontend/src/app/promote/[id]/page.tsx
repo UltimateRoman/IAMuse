@@ -31,8 +31,7 @@ const MainPage = () => {
     // console.log("Games: ", data);
     //@ts-ignore
     setGames(data.gameCreateds.find((game) => game.gameId === id));
-    //@ts-ignore
-    console.log(data.gameCreateds.find((game) => game.gameId === id))
+    // console.log(data.gameCreateds.find((game) => game.gameId === id))
   };
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-white">
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {games ? (
