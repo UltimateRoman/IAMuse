@@ -126,7 +126,10 @@ const MainPage = () => {
                 <p className="mb-4 text-gray-300">{games.metadataURI}</p>
                 <div className="flex flex-col items-center mt-4 space-y-4">
                   <div className="flex justify-between items-center space-x-8">
-                    <div className="flex flex-col items-center text-bold">
+                    <div className="flex flex-col items-center font-extrabold">
+                      <p>Creativity : 100</p>
+                      <p>Color Theory : 3</p>
+                      <p>Past games won : 1</p>
                       <img
                         src={`https://noun-api.com/beta/pfp?name=${challenger_1_Address}`}
                         alt="Avatar 1"
@@ -143,7 +146,10 @@ const MainPage = () => {
                         className="w-full max-w-sm px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
-                    <div className="flex flex-col items-center text-bold">
+                    <div className="flex flex-col items-center font-extrabold">
+                      <p>Creativity : 120</p>
+                      <p>Color Theory : 3</p>
+                      <p>Past games won : 2</p>
                       <img
                         src={`https://noun-api.com/beta/pfp?name=${challenger_2_Address}`}
                         alt="Avatar 2"

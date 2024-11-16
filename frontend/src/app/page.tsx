@@ -58,7 +58,7 @@ const MainPage = () => {
   };
   const handleCreateClick = async () => {
     console.log("Invoking Create game API");
-    const response = await fetch(`http://localhost:3001/createGame`, {
+    const response = await fetch(`http://170.106.177.82:3001/createGame`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,16 +82,16 @@ const MainPage = () => {
     if (!walletClient) return;
 
     const tx1 = await walletClient.writeContract({
-        address: GameABI["88882"].ConditionalTokens.address,
-        abi: GameABI["88882"].ConditionalTokens.abi,
-        functionName: "setApprovalForAll",
-        args: [id as `0x{string}`, true],
+      address: GameABI["88882"].ConditionalTokens.address,
+      abi: GameABI["88882"].ConditionalTokens.abi,
+      functionName: "setApprovalForAll",
+      args: [id as `0x{string}`, true],
     } as any);
 
     const transaction1 = await publicClient.waitForTransactionReceipt({
-        hash: tx1,
+      hash: tx1,
     });
-    console.log(transaction1)
+    console.log(transaction1);
     const tx2 = await walletClient.writeContract({
       //@ts-ignore
       address: id,
@@ -100,9 +100,9 @@ const MainPage = () => {
       args: [],
     });
     const transaction2 = await publicClient.waitForTransactionReceipt({
-        hash: tx2,
+      hash: tx2,
     });
-    console.log(transaction2)
+    console.log(transaction2);
     // console.log("data : ", tx2);
   };
 
@@ -260,7 +260,7 @@ const MainPage = () => {
                         ) : game.status == 0 ? (
                           <div className="flex w-full items-center justify-center ">
                             <Button
-                              onClick={() => handleJoinClick(`${game.game}`)}
+                              onClick={() => handleJoinClick(`${game.gameId}`)}
                               variant="primary"
                               className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
                             >
