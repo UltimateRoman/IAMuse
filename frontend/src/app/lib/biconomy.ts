@@ -13,17 +13,6 @@ import {
   PaymasterMode,
   UserOpReceipt,
 } from "@biconomy/account";
-import { chain } from "./chain";
-
-const bundler = new Bundler({
-  bundlerUrl: process.env.NEXT_PUBLIC_BUILDER_URL || "",
-  chainId: chain.id, // Replace this with your desired network
-  entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant
-});
-
-const paymaster = new Paymaster({
-  paymasterUrl: process.env.NEXT_PUBLIC_PAYMASTER_URL || "",
-});
 
 const createValidationModule = async (signer: SupportedSigner) => {
   return await ECDSAOwnershipValidationModule.create({
@@ -32,12 +21,28 @@ const createValidationModule = async (signer: SupportedSigner) => {
   });
 };
 
-export const createSmartAccount = async (walletClient: SupportedSigner) => {
+export const createSmartAccount = async (
+    walletClient: SupportedSigner,
+    chainId: number,
+    bundlerUrl: string,
+    paymasterUrl: string,
+) => {
+    console.log("CHAIN ID BICONOMY: ", chainId);
+    const bundler = new Bundler({
+      bundlerUrl: bundlerUrl,
+      chainId: chainId,
+      entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant
+    });
+
+    const paymaster = new Paymaster({
+        paymasterUrl: paymasterUrl,
+    });
+
   const validationModule = await createValidationModule(walletClient);
 
   return await createSmartAccountClient({
     signer: walletClient,
-    chainId: chain.id, // Replace this with your target network
+    chainId: chainId, // Replace this with your target network
     bundler: bundler, // Use the `bundler` we initialized above
     paymaster: paymaster, // Use the `paymaster` we initialized above
     entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant

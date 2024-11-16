@@ -2,7 +2,7 @@
 
 import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
 import { BrowserProviderContractRunner } from "@circles-sdk/adapter-ethers";
-import { CirclesConfig, Sdk } from '@circles-sdk/sdk';
+import { AvatarInterface, CirclesConfig, Sdk } from '@circles-sdk/sdk';
 import { BiconomySdkContractRunner } from "./biconomyAdapter";
 import { WalletContext } from "../lib/walletProvider";
 
@@ -14,6 +14,8 @@ interface CirclesSDKContextType {
     circlesProvider: any;
     circlesAddress: string | null;
     initSdk: () => Promise<void>;
+    avatar?: AvatarInterface;
+    initAvatar?: () => void;
 }
 
 const CirclesSDKContext = createContext<CirclesSDKContextType>({
@@ -23,7 +25,7 @@ const CirclesSDKContext = createContext<CirclesSDKContextType>({
     adapter: null,
     circlesProvider: null,
     circlesAddress: null,
-    // personalBalance: 0,
+    // per
     // groupBalance: 0,
     // avatar: null,
     // contract: null,
@@ -47,11 +49,12 @@ export const GnosisChainConfig: CirclesConfig = {
 
 export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
     const {smartAccount, isLoading, ethersProvider} = useContext(WalletContext);
-    const [sdk, setSdk] = useState<any|null>(null);
+    const [sdk, setSdk] = useState<Sdk|null>(null);
     const [isConnected, setIsConnected] = useState(false);
     const [adapter, setAdapter] = useState<any | null>(null);
     const [circlesProvider, setCirclesProvider] = useState<any | null>(null);
     const [circlesAddress, setCirclesAddress] = useState<any | null>(null);
+    const [avatar, setAvatar] = useState<AvatarInterface>()
 
     // Function to initialize the SDK
     const initSdk = useCallback(async () => {
@@ -74,7 +77,6 @@ export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
 
              const sdk = new Sdk(adapter, GnosisChainConfig); // Pass the initialized adapter to the SDK
              setSdk(sdk); // Set the SDK in the state
-             setIsConnected(true); // Update connection status
         } catch (error) {
             console.error("Error initializing SDK:", error);
         }
@@ -84,6 +86,21 @@ export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
         console.log("Initializing sdk")
         initSdk(); // Call initSdk when the component mounts
     }, [initSdk]);
+
+
+    async function initAvatar() {
+        if (sdk && smartAccount && !avatar) {
+            try {
+                const registeredAvatar = await sdk.getAvatar(await smartAccount.getAccountAddress());
+                setAvatar(registeredAvatar);
+                setIsConnected(true)
+            } catch (error) {
+                const registeredAvatar = await sdk.registerHuman();
+                setAvatar(registeredAvatar);
+                setIsConnected(true)
+            }
+        }
+    }
 
     // Provide the SDK context to child components
     return (
@@ -95,6 +112,8 @@ export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
             circlesProvider,
             circlesAddress,
             initSdk,
+            avatar,
+            initAvatar,
         }}>
             {children}
         </CirclesSDKContext.Provider>
