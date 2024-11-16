@@ -48,7 +48,7 @@ export async function handlePromoteSubBot(
       }
       const {category, gameId} = params;
       const subscribers = await getSubscribersByCategory(category)
-      const message = frameUrl+`?gameId=${gameId}`
+      const message = frameUrl+`?id=${gameId}`
       await notifySubscribers(subscribers, message);
       return { code: 200, message: "OK" };
   } else if (command == "subscribe") {

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
 import { frames } from "@/app/frames/frames";
+import { appURL } from "@/lib/util";
 
 const handler = frames(async (ctx) => {
   let iAm: string | undefined;
@@ -12,7 +13,7 @@ const handler = frames(async (ctx) => {
   console.log(`Current user: ${iAm}`);
   return {
     image:
-      "https://static.vecteezy.com/system/resources/previews/022/076/846/non_2x/children-sit-at-table-doing-joint-creativity-draw-pictures-using-watercolor-or-gouache-boy-and-girl-with-brushes-in-their-hands-participate-in-kids-creativity-competition-vector.jpg",
+      appURL() + "/art.png",
     imageOptions: {
       headers: {
         "Cache-Control": "max-age=1",
