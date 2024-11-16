@@ -34,11 +34,11 @@ export function handlePrepareForBidding(
   if (entity == null) {
     entity = new GameCreated(event.params.gameId)
   }
-  entity.status=2;
+  entity.status=1;
   entity.save()
 }
 
-export function handleGameFinishedEvent(
+export function handleGameFinished(
   event: GameFinishedEvent
 ): void {
   let entity = GameCreated.load(event.params.gameId);
