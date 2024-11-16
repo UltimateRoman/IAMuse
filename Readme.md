@@ -16,6 +16,11 @@ The below excalidraw represents the application that we plan to build using circ
 
 ## Phala 
 curl https://wapo-testnet.phala.network/ipfs/Qmc7zrN4Pen3ML7FHfoBEZpAosUjtK3fKBvh81ndbTeDy7?key=6742e16566409f95&type=challenge
+curl https://wapo-testnet.phala.network/logs/all/ipfs/QmXaXHKHY6usYaVfGHipqKTgtLmJEuaPppk3P1qHAsxteC\?key\=82ff40c7e5977a08
+
+Logs Shared - 
+
+https://red-pill.ai/shares/aaa73668-00aa-4728-a1f2-7d00afedd78a
 
 <br/>
 

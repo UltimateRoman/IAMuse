@@ -88,7 +88,7 @@ app.post('/createGame', async (req, res) => {
     const { gameId } = req.body;
     console.log(req.body);
 
-    const response = await axios.get('https://wapo-testnet.phala.network/ipfs/QmU2dNBThEQVdM8RuqyivySQuy4dQ56Scvn1f4ZfQ6ANxe', {
+    const response = await axios.get(process.env.PHALA_URL||'', {
         params: {
             key: '1ddc090cfb263f49',
             type: 'challenge'
@@ -198,21 +198,29 @@ async function callStartBidding(gameId: string, gameAddress:string, chainId: num
 }
 
 
-async function callFinishGame(winnerId: number, winnerAddress:string, gameAddress:string, chainId: number) {
+async function callFinishGame(winnerAddress:string, gameAddress:string, chainId: number) {
     try {
-        console.log(winnerId, winnerAddress, gameAddress, chainId);
-        // Setup the provider and wallet (replace with your actual RPC URL and private key)
-        const provider = new ethers.JsonRpcProvider(process.env.CHILLIZ_RPC_URL); //TODO: Add Flow RPC URL
-        const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY||'', provider); // Replace 'YOUR_PRIVATE_KEY' with your private key
+        console.log(winnerAddress, gameAddress, chainId);
 
-        // Define the contract's ABI and address
-        const contractGameAddress = gameAddress||''; // Replace with the smart contract's address
+        const response = await axios.post(process.env.PHALA_URL||'', {
+            params: {
+                key: '1ddc090cfb263f49'
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    
+        const winnerId = response.data;
+        console.log("The winner is --- ", winnerId);
+        const provider = new ethers.JsonRpcProvider(process.env.CHILLIZ_RPC_URL); //TODO: Add Flow RPC URL
+        const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY||'', provider);
+
+        const contractGameAddress = gameAddress||'';
         
 
-        // Create a contract instance
         const contract = new ethers.Contract(contractGameAddress, contractGameABI, wallet);
 
-        // Call the function on the smart contract
         const tx = await contract.finishGame(winnerId, winnerAddress);
         console.log(`Transaction submitted: ${tx.hash}`);
 
