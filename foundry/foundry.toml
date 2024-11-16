@@ -32,6 +32,7 @@ chilizSpicy = "https://spicy-rpc.chiliz.com/"
 [etherscan]
 polygonMumbai = { key = "${ETHERSCAN_API_KEY}" }
 sepolia = { key = "${ETHERSCAN_API_KEY}" }
+chilizSpicy = { key = "verifyContract", url = "https://api.routescan.io/v2/network/testnet/evm/88882/etherscan", chain = 88882 }
 
 
 [fmt]

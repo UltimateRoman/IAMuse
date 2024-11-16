@@ -1772,12 +1772,12 @@ const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "contract IERC20",
+              internalType: "address",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "contract IConditionalTokens",
+              internalType: "address",
             },
           ],
           stateMutability: "nonpayable",
@@ -1873,6 +1873,19 @@ const deployedContracts = {
               name: "_conditionalTokens",
               type: "address",
               internalType: "contract IConditionalTokens",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setGameTemplate",
+          inputs: [
+            {
+              name: "_gameTemplate",
+              type: "address",
+              internalType: "address",
             },
           ],
           outputs: [],
@@ -1981,6 +1994,11 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "GameAlreadyCreated",
+          inputs: [],
+        },
+        {
+          type: "error",
           name: "InsufficientBalance",
           inputs: [
             {
@@ -2018,18 +2036,12 @@ const deployedContracts = {
           ],
         },
       ],
-      inheritedFunctions: {
-        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        renounceOwnership:
-          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        transferOwnership:
-          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
   },
   88882: {
     Token: {
-      address: "0x92503eb7ae4abc36ebc0db34127e93d6d8a49785",
+      address: "0xbda16b92cda4efdb6b059ed77b98bfcbda29973f",
       abi: [
         {
           type: "constructor",
@@ -2865,7 +2877,7 @@ const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0x2604cba3e6ca506711faf0924b4f9ce4680f753c",
+      address: "0xaa3117cb5e45c6b4aceafb7d2aa011435f3cce92",
       abi: [
         {
           type: "constructor",
@@ -3782,7 +3794,7 @@ const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0xf21048d186f0b96263851d9183b276aa32bd7e55",
+      address: "0x37ce7ef05e7d93eed602bb3a5352bc625578862c",
       abi: [
         {
           type: "constructor",
@@ -3795,12 +3807,12 @@ const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "contract IERC20",
+              internalType: "address",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "contract IConditionalTokens",
+              internalType: "address",
             },
           ],
           stateMutability: "nonpayable",
@@ -3896,6 +3908,19 @@ const deployedContracts = {
               name: "_conditionalTokens",
               type: "address",
               internalType: "contract IConditionalTokens",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "setGameTemplate",
+          inputs: [
+            {
+              name: "_gameTemplate",
+              type: "address",
+              internalType: "address",
             },
           ],
           outputs: [],
@@ -4004,6 +4029,11 @@ const deployedContracts = {
         },
         {
           type: "error",
+          name: "GameAlreadyCreated",
+          inputs: [],
+        },
+        {
+          type: "error",
           name: "InsufficientBalance",
           inputs: [
             {
@@ -4041,13 +4071,7 @@ const deployedContracts = {
           ],
         },
       ],
-      inheritedFunctions: {
-        owner: "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        renounceOwnership:
-          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-        transferOwnership:
-          "lib/openzeppelin-contracts/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
   },
 } as const;
