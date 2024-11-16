@@ -18,34 +18,48 @@ contract GameFactory is Ownable {
 
     event GameCreated(bytes32 gameId, address game, string metadataURI);
 
+    error GameAlreadyCreated();
+
+    modifier notCreated(bytes32 gameId) {
+        if (games[gameId] != address(0)) {
+            revert GameAlreadyCreated();
+        }
+        _;
+    }
+
     constructor(
         address _oracle, 
         IERC20 _token,
-        IConditionalTokens _conditionalTokens
+        IConditionalTokens _conditionalTokens,
+        Game _gameTemplate
     ) Ownable(msg.sender) {
         oracle = _oracle;
         token = _token;
         conditionalTokens = _conditionalTokens;
-        gameTemplate = address(new Game());
+        gameTemplate = address(_gameTemplate);
     }
 
-    function createGame(bytes32 gameId, string calldata metadataURI) public onlyOwner {
+    function createGame(bytes32 gameId, string calldata metadataURI) external notCreated(gameId) {
         address game = Clones.clone(gameTemplate);
         Game(game).initialize(gameId, oracle, token, conditionalTokens, metadataURI);
         games[gameId] = game;
         emit GameCreated(gameId, game, metadataURI);
     }
 
-    function setOracle(address _oracle) public onlyOwner {
+    function setOracle(address _oracle) external onlyOwner {
         oracle = _oracle;
     }
 
-    function setToken(IERC20 _token) public onlyOwner {
+    function setToken(IERC20 _token) external onlyOwner {
         token = _token;
     }
 
-    function setConditionalTokens(IConditionalTokens _conditionalTokens) public onlyOwner {
+    function setConditionalTokens(IConditionalTokens _conditionalTokens) external onlyOwner {
         conditionalTokens = _conditionalTokens;
+    }
+
+    function setGameTemplate(address _gameTemplate) external onlyOwner {
+        gameTemplate = _gameTemplate;
     }
 
     function getGame(bytes32 gameId) public view returns (address) {

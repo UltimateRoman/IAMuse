@@ -1,0 +1,8 @@
+{
+  "chiliz-testnet": {
+    "GameFactory": {
+      "address": "0x38c84b0c4561bee70b8e028561fb664543e1ad40",
+      "startBlock": 0
+    }
+  }
+}

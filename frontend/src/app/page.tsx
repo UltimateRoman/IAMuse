@@ -1,10 +1,12 @@
   "use client";
-  import React, { useState, useContext, useEffect } from "react";
+  import React, { useEffect, useState, useContext, useEffect } from "react";
   import { Button } from "./components/ui/button";
   import { Card, CardContent, CardHeader } from "./components/ui/card";
   import Link from "next/link";
   import { useRouter } from "next/navigation";
   import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import createApolloClient from "./lib/appolo-client";
+import { gql } from "@apollo/client";
   import CirclesSDKContext from "./circles/circles";
 import { AvatarInterface } from "@circles-sdk/sdk";
 import { WalletContext } from "./lib/walletProvider";
@@ -48,6 +50,7 @@ import { WalletContext } from "./lib/walletProvider";
 
   const MainPage = () => {
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
+    const [gameIds, setGameIDs] = useState(null);
     const { sdk } = useContext(CirclesSDKContext);
     const [avatar, setAvatar] = useState<AvatarInterface>();
     const {smartAccount, isLoading} = useContext(WalletContext);
@@ -62,10 +65,7 @@ import { WalletContext } from "./lib/walletProvider";
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          gameId: "123123123n213",
-        }),
+        }
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -96,10 +96,32 @@ import { WalletContext } from "./lib/walletProvider";
         }
       }
     };
+    const appoloClient = async () => {
+    const client = createApolloClient();
+    const { data } = await client.query({
+      query: gql`
+        query gameCreateds {
+          gameCreateds {
+            id
+            gameId
+            game
+            metadataURI
+          }
+        }
+      `,
+    });
+    console.log(data);
+    setGameIDs(data);
+  };
+
+  useEffect(() => {
+    appoloClient();
+  }, []);
 
     useEffect(() => {
       human();
     }, [sdk]);
+
 
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
