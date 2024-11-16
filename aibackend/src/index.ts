@@ -15,6 +15,10 @@ import {
 import { spicy } from 'viem/chains'
 import superjson from 'superjson'
 import  {deployedContracts} from './deployedContracts';
+import fs from 'fs';
+import axios from 'axios';
+//import zlib from 'zlib';
+
 
 export const app = new Hono()
 
@@ -165,7 +169,78 @@ app.get('/', async (c) => {
 app.post('/', async (c) => {
     const data = await c.req.json()
     console.log('user payload in JSON:', data)
+    await aiChat("test");
     return c.json(data)
 });
 
+function convertImageToBase64(filePath: string): string {
+    const imageBuffer = fs.readFileSync(filePath);
+    return imageBuffer.toString('base64');
+}
+
+async function downloadImage(url: string, filePath: string): Promise<void> {
+    const response = await axios({
+        url,
+        method: 'GET',
+        responseType: 'arraybuffer',
+    });
+    fs.writeFileSync(filePath, response.data);
+}
+
+async function aiChat(questionType:string): Promise<Record<string, any>> {
+    // return new Promise((resolve) => {
+    //   resolve({
+    //     content: "Do ten burpies in 2 minutes!"
+    //   });
+    // });
+    // AI Response: { messages: [ { role: 'system', content: 'Reply with a challenge question, that challenges players to a burpies competition for 2 minutes' } ] }
+    
+/*
+
+    await downloadImage('https://github.com/test-images/png/blob/main/202105/cs-blue-00f.png', 'SB_LogoH_Dark.png');
+    await downloadImage('https://github.com/test-images/png/blob/main/202105/cs-gray-7f7f7f.png', '/home/wapo/SB_LogoH_White.png');
+*/
+    const image1 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="//convertImageToBase64("/home/wapo/SB_LogoH_Dark.png");
+    const image2 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAQSURBVHjaYvj//z8DQIABAAj8Av7bok0WAAAAAElFTkSuQmCC"//convertImageToBase64("/home/wapo/SB_LogoH_White.png");
+
+
+    let vault: Record<string, string> = {};
+    let result: Record<string, any> = {};
+    vault = JSON.parse(process.env.secret || "");
+    const redPillKey = vault.apiKey ? (vault.apiKey as string) : "";
+
+    const prompt = `
+    Compare these two images in terms of visual appeal and emotional impact.
+    Highlight the differences and explain which image feels more joyous or engaging:
+    - Image 1: ${image1}
+    - Image 2: ${image2}
+    `;
+
+    return fetch("https://api.red-pill.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer sk-1wOov65bo9vQtJB7D9vFp8UpnwsNgEfR9J23RoA4eEQXJKy4",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+            { role: 'system', content: 'You are an image analysis assistant.' },
+            { role: 'user', content: prompt },
+        ],
+      }),
+    })
+      .then((response) => response.json() as Promise<Record<string, any>>)
+      .then((data: Record<string, any>) => {
+        console.log("AI Response:", data);
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        throw new Error("Failed to fetch AI response");
+      });
+      
+  }
+
+  
 export default handle(app)
