@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
 import Link from "next/link";
@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import createApolloClient from "./lib/appolo-client";
 import { gql } from "@apollo/client";
+import CirclesSDKContext from "./circles/circles";
+import { AvatarInterface } from "@circles-sdk/sdk";
+import { WalletContext } from "./lib/walletProvider";
 
 const games = [
   {
@@ -48,6 +51,9 @@ const games = [
 const MainPage = () => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [gameIds, setGameIDs] = useState(null);
+  const { sdk } = useContext(CirclesSDKContext);
+  const [avatar, setAvatar] = useState<AvatarInterface>();
+  const { smartAccount, isLoading } = useContext(WalletContext);
 
   const router = useRouter();
   const handleJoinClick = (id: string) => {
@@ -74,6 +80,25 @@ const MainPage = () => {
     router.push(`/promote/${id}`);
   };
 
+  const human = async () => {
+    if (sdk && !avatar) {
+      if (!isLoading && smartAccount) {
+        const userAvatar = await sdk.getAvatar(
+          await smartAccount.getAccountAddress(),
+          true
+        );
+        if (!userAvatar) {
+          console.log("Registering human");
+          const registeredAvatar = await sdk.registerHuman();
+          console.log("avatar : ", registeredAvatar);
+          setAvatar(registeredAvatar);
+          return;
+        }
+        console.log("Got avatar");
+        setAvatar(userAvatar);
+      }
+    }
+  };
   const appoloClient = async () => {
     const client = createApolloClient();
     const { data } = await client.query({
@@ -90,14 +115,15 @@ const MainPage = () => {
     });
     console.log(data);
     setGameIDs(data);
-
-    
-
   };
 
   useEffect(() => {
     appoloClient();
   }, []);
+
+  useEffect(() => {
+    human();
+  }, [sdk]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
