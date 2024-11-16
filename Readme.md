@@ -12,3 +12,7 @@ The below excalidraw represents the application that we plan to build using circ
 <p align="center">
   <img src="assets/IAmuse.png" alt="IAmuse" style="width: 100%;" />
 </p>
+
+
+## Phala 
+curl https://wapo-testnet.phala.network/ipfs/Qmc7zrN4Pen3ML7FHfoBEZpAosUjtK3fKBvh81ndbTeDy7?key=6742e16566409f95&type=challenge
