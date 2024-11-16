@@ -10,6 +10,7 @@ import { gql } from "@apollo/client";
 import CirclesSDKContext from "./circles/circles";
 import { AvatarInterface } from "@circles-sdk/sdk";
 import { WalletContext } from "./lib/walletProvider";
+import { addPlayer } from "./lib/transaction";
 
 const games = [
   {
@@ -20,7 +21,7 @@ const games = [
     challenger_2: "Challenger 1B",
   },
   {
-    id: 2,
+    id: "0xc028a14574ff806bda6bf664035b9cf263963a89976da1c0c37c97efc383cbfd",
     title: "Game 2",
     description: "This is the description for Game 2. Who are you betting on?",
     challenger_1: "Challenger 2A",
@@ -57,6 +58,9 @@ const MainPage = () => {
 
   const router = useRouter();
   const handleJoinClick = (id: string) => {
+    if (smartAccount) {
+      addPlayer(smartAccount, id);
+    }
     router.push(`/join/${id}`);
   };
   const handleCreateClick = async () => {
@@ -83,19 +87,10 @@ const MainPage = () => {
   const human = async () => {
     if (sdk && !avatar) {
       if (!isLoading && smartAccount) {
-        const userAvatar = await sdk.getAvatar(
-          await smartAccount.getAccountAddress(),
-          true
-        );
-        if (!userAvatar) {
-          console.log("Registering human");
-          const registeredAvatar = await sdk.registerHuman();
-          console.log("avatar : ", registeredAvatar);
-          setAvatar(registeredAvatar);
-          return;
-        }
-        console.log("Got avatar");
-        setAvatar(userAvatar);
+        const registeredAvatar = await sdk.registerHuman();
+        console.log("avatar : ", registeredAvatar);
+        setAvatar(registeredAvatar);
+        return;
       }
     }
   };
@@ -113,7 +108,7 @@ const MainPage = () => {
         }
       `,
     });
-    console.log(data);
+    console.log("Appolo: ", data);
     setGameIDs(data);
   };
 
@@ -122,7 +117,7 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    human();
+    // human();
   }, [sdk]);
 
   return (
