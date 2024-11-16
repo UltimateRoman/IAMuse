@@ -88,9 +88,9 @@ app.post('/createGame', async (req, res) => {
     const { gameId } = req.body;
     console.log(req.body);
 
-    const response = await axios.get('https://wapo-testnet.phala.network/ipfs/QmYcq5HL8JE6ZALBPibLrZMskkhCFvmRjbkamAUr9Knwdw', {
+    const response = await axios.get('https://wapo-testnet.phala.network/ipfs/QmU2dNBThEQVdM8RuqyivySQuy4dQ56Scvn1f4ZfQ6ANxe', {
         params: {
-            key: '810f79a2cf72d3fd',
+            key: '1ddc090cfb263f49',
             type: 'challenge'
         }
     });

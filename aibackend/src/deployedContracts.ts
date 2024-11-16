@@ -6,7 +6,7 @@
 export const deployedContracts = {
   545: {
     Game: {
-      address: "0x200e26f6b88503ab565d4b373e075ed064c03f76",
+      address: "0xf21048d186f0b96263851d9183b276aa32bd7e55",
       abi: [
         {
           type: "constructor",
@@ -541,6 +541,13 @@ export const deployedContracts = {
           stateMutability: "view",
         },
         {
+          type: "function",
+          name: "withdraw",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
           type: "event",
           name: "GameFinished",
           inputs: [
@@ -787,7 +794,7 @@ export const deployedContracts = {
       inheritedFunctions: {},
     },
     Token: {
-      address: "0x842562a3099ffc7cebd4188c8853b6a29bb2fdea",
+      address: "0xbda16b92cda4efdb6b059ed77b98bfcbda29973f",
       abi: [
         {
           type: "constructor",
@@ -1623,7 +1630,7 @@ export const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0x7f6797bc95cdf6d185a76729820be45b7b8bbd2d",
+      address: "0xaa3117cb5e45c6b4aceafb7d2aa011435f3cce92",
       abi: [
         {
           type: "constructor",
@@ -2540,7 +2547,7 @@ export const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0x92503eb7ae4abc36ebc0db34127e93d6d8a49785",
+      address: "0x37ce7ef05e7d93eed602bb3a5352bc625578862c",
       abi: [
         {
           type: "constructor",
@@ -4867,7 +4874,7 @@ export const deployedContracts = {
   },
   88882: {
     Game: {
-      address: "0xac8d7933c8be0d11e3a403db38c118e7c5e4c9d5",
+      address: "0xd2f61a1acc151864e4ac4fd426988a461304a343",
       abi: [
         {
           type: "constructor",
@@ -5402,6 +5409,13 @@ export const deployedContracts = {
           stateMutability: "view",
         },
         {
+          type: "function",
+          name: "withdraw",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
           type: "event",
           name: "GameFinished",
           inputs: [
@@ -5648,7 +5662,7 @@ export const deployedContracts = {
       inheritedFunctions: {},
     },
     Token: {
-      address: "0x3c0b62de72281f462f05f489154a979fbbb842c9",
+      address: "0xe62bc5aac85e4e2e39888236a3b7128e69d9f6c3",
       abi: [
         {
           type: "constructor",
@@ -6484,7 +6498,7 @@ export const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0x11eaba3d87d927ce83a1fdd3feb49f54e4255471",
+      address: "0xcec24cfeca71a6afd17b13363a0f2348dfac295e",
       abi: [
         {
           type: "constructor",
@@ -7401,7 +7415,7 @@ export const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0x1f8dffd9cdac3f6259e690d74add7b298f75e431",
+      address: "0x8cfffb42c942190d6e7ff2e3fcf1fae1c772e323",
       abi: [
         {
           type: "constructor",
