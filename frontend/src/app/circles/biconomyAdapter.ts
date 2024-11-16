@@ -23,7 +23,7 @@ export class BiconomySdkContractRunner implements SdkContractRunner {
   estimateGas?: ((tx: TransactionRequest) => Promise<bigint>) | undefined = async (tx) => {
     const gasEstimate = await this.smartAccount?.getGasEstimate([{
       to: tx.to,
-      value: tx.value.toString(),
+      value: tx.value && tx.value.toString(),
       data: tx.data
     }]);
     if (!gasEstimate) {
@@ -69,7 +69,7 @@ export class BiconomySdkContractRunner implements SdkContractRunner {
       gasLimit: BigInt(userOpReceipt.receipt.gasUsed.toString()),
       gasPrice: BigInt(userOpReceipt.receipt.effectiveGasPrice.toString()),
       data: '',
-      value: BigInt(tx.value.toString()),
+      value: tx.value && BigInt(tx.value.toString()),
       chainId: baseSepolia.id,
     };
   };
@@ -96,7 +96,7 @@ export class BiconomyBatchRun implements BatchRun {
   async run() {
     const txResponse = await this.smartAccount.sendTransaction(this.transactions.map(tx => ({
       to: tx.to,
-      value: tx.value.toString(),
+      value: tx.value && tx.value.toString(),
       data: tx.data
     })));
 
@@ -114,7 +114,7 @@ export class BiconomyBatchRun implements BatchRun {
       gasPrice: BigInt(txReceipt.receipt.effectiveGasPrice.toString()),
       data: '',
       value: BigInt(0),
-      chainId: 100
+      chainId: baseSepolia.id
     };
   }
 }

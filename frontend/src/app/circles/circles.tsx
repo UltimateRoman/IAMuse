@@ -79,10 +79,6 @@ export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
             setSdk(sdk); // Set the SDK in the state
             setIsConnected(true); // Update connection status
             console.log("Circles is working")
-            const avatar = await sdk.registerHuman();
-            console.log("Got avatar")
-            console.log(avatar)
-            console.log(JSON.stringify(avatar))
         } catch (error) {
             console.error("Error initializing SDK:", error);
         }
