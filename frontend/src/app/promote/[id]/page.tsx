@@ -19,6 +19,7 @@ import { spicy } from "viem/chains";
 import { approve, placeWagerWalletClient } from "@/app/lib/transaction";
 import { client, publicClient } from "./client";
 import GameABI from "../../../../../foundry/deployments/deployedContracts";
+import { useRouter } from "next/navigation";
 
 const MainPage = () => {
   const [challenger_1_Address, setChallenger_1_Address] = useState("address1");
@@ -52,6 +53,7 @@ const MainPage = () => {
   const [wagerAmount, setWagerAmount] = useState(0);
   // const {wagerSmartAccount} = useContext(WalletContext);
   const [walletClient, setWalletClient] = useState<WalletClient>();
+  const router = useRouter()
 
   useEffect(() => {
     async function init() {
@@ -82,6 +84,8 @@ const MainPage = () => {
       challengerId,
       parseUnits(wagerAmount.toString(), 18)
     );
+    router.push("/")
+
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +140,6 @@ const MainPage = () => {
             >
               <CardHeader title={games.gameId}></CardHeader>
               <CardContent>
-                <p className="mb-4 text-gray-300">{games.metadataURI}</p>
                 <div className="flex flex-col items-center mt-6 space-y-6">
                   <div className="flex justify-between items-center space-x-12">
                     <div className="flex flex-col items-center text-center font-semibold text-gray-700">
