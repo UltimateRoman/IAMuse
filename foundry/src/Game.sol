@@ -216,7 +216,13 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     }
 
     function eligibleRewardAmount(address account) public view returns (uint256) {
+        if (totalBetAmount == 0) {
+            return 0;
+        }
         uint256 balance = conditionalTokens.balanceOf(account, positionIds[winnerId]);
+        if (balance == 0) {
+            return 0;
+        }
         uint256 additionalReward = (contractRewardBalance * (100 - WINNER_PAYOUT) * balance) / (100 * totalBetAmount);
         return (balance + additionalReward);
     }

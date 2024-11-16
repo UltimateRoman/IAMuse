@@ -13,7 +13,7 @@
     "compile": "make compile",
     "deploy": "make build-and-deploy RPC_URL=${1:-chilizSpicy}",
     "deploy-controller": "make build-and-deploy RPC_URL=${1:-chiado}",
-    "deploy:verify": "make deploy-verify RPC_URL=${1:-flowTestnet}",
+    "deploy:verify": "make deploy-verify RPC_URL=${1:-chilizSpicy}",
     "deploy-controller:verify": "make deploy-verify RPC_URL=${1:-chiado}",
     "flatten": "make flatten",
     "fork": "make fork FORK_URL=${1:-mainnet}",
