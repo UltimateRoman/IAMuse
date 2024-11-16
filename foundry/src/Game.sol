@@ -9,12 +9,18 @@ import { AccessControlUpgradeable } from "@openzeppelin/contracts-upgradeable/ac
 import { IConditionalTokens } from "./interfaces/IConditionalTokens.sol";
 
 contract Game is IERC1155Receiver, AccessControlUpgradeable {
+    uint256 public constant MIN_OUTCOMES = 2;
+    uint256 public constant MAX_OUTCOMES = 6;
+    uint256 public constant WINNER_PAYOUT = 2;
+
     uint256 public winnerId;
+    uint256 public totalBetAmount;
     bytes32 public gameId;
     address public oracle;
     string public metadataURI;
 
     uint256 numberOfOutcomes;
+    uint256 contractRewardBalance;
     bytes32 conditionId;
     uint256[] positionIds;
     uint256[] partitions;
@@ -70,10 +76,11 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         _;
     }
 
-    event PreparedForBidding(uint256 outcomeSlotCount);
-    event PlacedBet(address wagerer, uint256 playerId, uint256 amount);
-    event GameStarted();
-    event GameFinished(uint256 winnerId);
+    event PreparedForBidding(bytes32 gameId, uint256 outcomeSlotCount);
+    event PlacedBet(bytes32 gameId, address wagerer, uint256 playerId, uint256 amount);
+    event GameStarted(bytes32 gameId);
+    event GameFinished(bytes32 gameId, uint256 winnerId);
+    event RedeemedWinnings(bytes32 gameId, address wagerer, uint256 amount);
 
     error NotOracle();
     error NotStarted();
@@ -111,13 +118,13 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         if (status != GameStatus.CREATED) {
             revert GameHasStarted();
         }
-        if (outcomeSlotCount < 2) {
+        if (outcomeSlotCount < MIN_OUTCOMES || outcomeSlotCount > MAX_OUTCOMES) {
             revert InvalidOutcomeSlotCount();
         }
 
         numberOfOutcomes = outcomeSlotCount;
-        conditionId = conditionalTokens.getConditionId(oracle, gameId, numberOfOutcomes);
-        conditionalTokens.prepareCondition(oracle, gameId, numberOfOutcomes);
+        conditionId = conditionalTokens.getConditionId(address(this), gameId, numberOfOutcomes);
+        conditionalTokens.prepareCondition(address(this), gameId, numberOfOutcomes);
 
         for (uint8 i = 0; i < outcomeSlotCount; i++) {
             uint256 indexSet = 1 << i;
@@ -132,7 +139,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         }
 
         status = GameStatus.BIDDING;
-        emit PreparedForBidding(outcomeSlotCount);
+        emit PreparedForBidding(gameId, outcomeSlotCount);
     }
 
     function placeBet(uint256 playerId, uint256 betAmount) external inBidding {
@@ -157,15 +164,16 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         );
 
         bets[msg.sender] += betAmount;
-        emit PlacedBet(msg.sender, playerId, betAmount);
+        totalBetAmount += betAmount;
+        emit PlacedBet(gameId, msg.sender, playerId, betAmount);
     }
 
     function startGame() external inBidding onlyRole(OPERATOR_ROLE) {
         status = GameStatus.STARTED;
-        emit GameStarted();
+        emit GameStarted(gameId);
     }
 
-    function finishGame(uint256 _winnerId) external gameStarted onlyOracle {
+    function finishGame(uint256 _winnerId, address _winnerAddress) external gameStarted onlyOracle {
         if (_winnerId >= numberOfOutcomes) {
             revert InvalidWinner();
         }
@@ -178,7 +186,27 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         conditionalTokens.redeemPositions(token, bytes32(0), conditionId, partitions);
 
         status = GameStatus.FINISHED;
-        emit GameFinished(winnerId);
+
+        token.transfer(_winnerAddress, (totalBetAmount * WINNER_PAYOUT) / 100);
+        emit GameFinished(gameId, winnerId);
+    }
+
+    function redeemWinnings() external gameFinished {
+        uint256 balance = conditionalTokens.balanceOf(msg.sender, positionIds[winnerId]);
+        
+        IERC1155(address(conditionalTokens)).safeTransferFrom(
+            msg.sender,
+            address(this),
+            positionIds[winnerId],
+            balance,
+            ""
+        );
+        conditionalTokens.redeemPositions(token, bytes32(0), conditionId, partitions);
+        contractRewardBalance = token.balanceOf(address(this));
+        uint256 additionalReward = (contractRewardBalance * (100 - WINNER_PAYOUT) * balance) / (100 * totalBetAmount);
+
+        token.transfer(msg.sender, balance + additionalReward);
+        emit RedeemedWinnings(gameId, msg.sender, balance);
     }
 
     function setMetadataURI(string calldata _metadataURI) external {
@@ -195,6 +223,20 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
 
     function getBetAmount(address account) public view returns (uint256) {
         return bets[account];
+    }
+
+    function getPositionIds() public view returns (uint256[] memory) {
+        return positionIds;
+    }
+
+    function getCollectionIds() public view returns (bytes32[] memory) {
+        return collectionIds;
+    }
+
+    function eligibleRewardAmount(address account) public view returns (uint256) {
+        uint256 balance = conditionalTokens.balanceOf(account, positionIds[winnerId]);
+        uint256 additionalReward = (contractRewardBalance * (100 - WINNER_PAYOUT) * balance) / (100 * totalBetAmount);
+        return (balance + additionalReward);
     }
 
     function onERC1155Received(

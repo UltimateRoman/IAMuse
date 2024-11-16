@@ -2046,7 +2046,7 @@ const deployedContracts = {
   },
   88882: {
     Game: {
-      address: "0x97993ba5691aa438379d0b75e53dff5fa2085de9",
+      address: "0x63f02609ca80560f805de70b9ebc8a85d9793d3f",
       abi: [
         {
           type: "constructor",
@@ -2068,6 +2068,32 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "MAX_OUTCOMES",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "MIN_OUTCOMES",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "OPERATOR_ROLE",
           inputs: [],
           outputs: [
@@ -2081,12 +2107,49 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "WINNER_PAYOUT",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "eligibleRewardAmount",
+          inputs: [
+            {
+              name: "account",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "finishGame",
           inputs: [
             {
               name: "_winnerId",
               type: "uint256",
               internalType: "uint256",
+            },
+            {
+              name: "_winnerAddress",
+              type: "address",
+              internalType: "address",
             },
           ],
           outputs: [],
@@ -2126,6 +2189,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getCollectionIds",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32[]",
+              internalType: "bytes32[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getConditionalTokenBalance",
           inputs: [
             {
@@ -2144,6 +2220,19 @@ const deployedContracts = {
               name: "",
               type: "uint256",
               internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getPositionIds",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256[]",
+              internalType: "uint256[]",
             },
           ],
           stateMutability: "view",
@@ -2379,6 +2468,13 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "redeemWinnings",
+          inputs: [],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
           name: "renounceRole",
           inputs: [
             {
@@ -2467,6 +2563,19 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "totalBetAmount",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "winnerId",
           inputs: [],
           outputs: [
@@ -2483,6 +2592,12 @@ const deployedContracts = {
           name: "GameFinished",
           inputs: [
             {
+              name: "gameId",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
               name: "winnerId",
               type: "uint256",
               indexed: false,
@@ -2494,7 +2609,14 @@ const deployedContracts = {
         {
           type: "event",
           name: "GameStarted",
-          inputs: [],
+          inputs: [
+            {
+              name: "gameId",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+          ],
           anonymous: false,
         },
         {
@@ -2514,6 +2636,12 @@ const deployedContracts = {
           type: "event",
           name: "PlacedBet",
           inputs: [
+            {
+              name: "gameId",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
             {
               name: "wagerer",
               type: "address",
@@ -2540,7 +2668,38 @@ const deployedContracts = {
           name: "PreparedForBidding",
           inputs: [
             {
+              name: "gameId",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
               name: "outcomeSlotCount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "RedeemedWinnings",
+          inputs: [
+            {
+              name: "gameId",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
+              name: "wagerer",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "amount",
               type: "uint256",
               indexed: false,
               internalType: "uint256",
@@ -2693,7 +2852,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     Token: {
-      address: "0xe030c76527dbf44d60aafb1e69f68efd0aa64dee",
+      address: "0x0cf076eb968e81bedd9e1dc5a26818fe3c35a82c",
       abi: [
         {
           type: "constructor",
@@ -3529,7 +3688,7 @@ const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0x0654c15af0d895e93fd393c5c06a23b8f00d12d0",
+      address: "0xaf9dafd4c6d53be7a2ae95ad1786e5b3953f4a7c",
       abi: [
         {
           type: "constructor",
@@ -4446,7 +4605,7 @@ const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0xcf0daadbd93be768291d3a6c556dfee26e40af8e",
+      address: "0x077fd4c0563b9d01a009c84564c31459bc18dccb",
       abi: [
         {
           type: "constructor",
