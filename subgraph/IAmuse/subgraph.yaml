@@ -8,7 +8,7 @@ dataSources:
     name: GameFactory
     network: chiliz-testnet
     source:
-      address: "0x077fd4c0563b9d01a009c84564c31459bc18dccb"
+      address: "0x1F8dffd9cDaC3f6259E690D74aDD7B298f75E431"
       abi: GameFactory
       startBlock: 19373830
     mapping:
@@ -44,3 +44,5 @@ templates:
       eventHandlers:
         - event: PreparedForBidding(bytes32,uint256)
           handler: handlePrepareForBidding
+        - event: GameFinished(bytes32,uint256)
+          handler: handleGameFinished

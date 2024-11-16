@@ -1,4 +1,4 @@
-type GameCreated @entity(immutable: true) {
+type GameCreated @entity(immutable: false) {
   id: Bytes!
   gameId: Bytes! # bytes32
   game: Bytes! # address
@@ -6,7 +6,7 @@ type GameCreated @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-  status:Int
+  status:Int  
 }
 
 type OwnershipTransferred @entity(immutable: true) {

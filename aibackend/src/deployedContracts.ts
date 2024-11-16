@@ -484,13 +484,6 @@ export const deployedContracts = {
         },
         {
           type: "function",
-          name: "startGame",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "status",
           inputs: [],
           outputs: [
@@ -562,19 +555,6 @@ export const deployedContracts = {
               type: "uint256",
               indexed: false,
               internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "GameStarted",
-          inputs: [
-            {
-              name: "gameId",
-              type: "bytes32",
-              indexed: false,
-              internalType: "bytes32",
             },
           ],
           anonymous: false,
@@ -801,11 +781,6 @@ export const deployedContracts = {
         {
           type: "error",
           name: "NotOracle",
-          inputs: [],
-        },
-        {
-          type: "error",
-          name: "NotStarted",
           inputs: [],
         },
       ],
@@ -2578,17 +2553,17 @@ export const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "contract IERC20",
+              internalType: "address",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "contract IConditionalTokens",
+              internalType: "address",
             },
             {
               name: "_gameTemplate",
               type: "address",
-              internalType: "contract Game",
+              internalType: "address",
             },
           ],
           stateMutability: "nonpayable",
@@ -4618,17 +4593,17 @@ export const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "contract IERC20",
+              internalType: "address",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "contract IConditionalTokens",
+              internalType: "address",
             },
             {
               name: "_gameTemplate",
               type: "address",
-              internalType: "contract Game",
+              internalType: "address",
             },
           ],
           stateMutability: "nonpayable",
@@ -4892,7 +4867,7 @@ export const deployedContracts = {
   },
   88882: {
     Game: {
-      address: "0xbd61548b6096ada46786487fba1cf284e1eb3482",
+      address: "0xac8d7933c8be0d11e3a403db38c118e7c5e4c9d5",
       abi: [
         {
           type: "constructor",
@@ -5370,13 +5345,6 @@ export const deployedContracts = {
         },
         {
           type: "function",
-          name: "startGame",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "status",
           inputs: [],
           outputs: [
@@ -5448,19 +5416,6 @@ export const deployedContracts = {
               type: "uint256",
               indexed: false,
               internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "GameStarted",
-          inputs: [
-            {
-              name: "gameId",
-              type: "bytes32",
-              indexed: false,
-              internalType: "bytes32",
             },
           ],
           anonymous: false,
@@ -5689,16 +5644,11 @@ export const deployedContracts = {
           name: "NotOracle",
           inputs: [],
         },
-        {
-          type: "error",
-          name: "NotStarted",
-          inputs: [],
-        },
       ],
       inheritedFunctions: {},
     },
     Token: {
-      address: "0xc30f885bb565d7b5be06f3cca44ce950163a045b",
+      address: "0x3c0b62de72281f462f05f489154a979fbbb842c9",
       abi: [
         {
           type: "constructor",
@@ -6534,7 +6484,7 @@ export const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0x9d5f960f8787f9c260cff4f3060cdff7d70e1dd2",
+      address: "0x11eaba3d87d927ce83a1fdd3feb49f54e4255471",
       abi: [
         {
           type: "constructor",
@@ -7451,7 +7401,7 @@ export const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0x7a51ddd00579650f6ca525aae373849c53f40e80",
+      address: "0x1f8dffd9cdac3f6259e690d74add7b298f75e431",
       abi: [
         {
           type: "constructor",
@@ -7464,17 +7414,17 @@ export const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "contract IERC20",
+              internalType: "address",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "contract IConditionalTokens",
+              internalType: "address",
             },
             {
               name: "_gameTemplate",
               type: "address",
-              internalType: "contract Game",
+              internalType: "address",
             },
           ],
           stateMutability: "nonpayable",

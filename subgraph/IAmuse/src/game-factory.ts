@@ -6,7 +6,9 @@ import {
 import { GameCreated, OwnershipTransferred } from "../generated/schema"
 
 import {GameInst} from '../generated/templates'
-import {PreparedForBidding as PreparedForBiddingEvent} from '../generated/templates/GameInst/Game'
+import {PreparedForBidding as PreparedForBiddingEvent
+  ,GameFinished as GameFinishedEvent
+} from '../generated/templates/GameInst/Game'
 
 export function handleGameCreated(event: GameCreatedEvent): void {
   let entity = new GameCreated(
@@ -32,8 +34,19 @@ export function handlePrepareForBidding(
   if (entity == null) {
     entity = new GameCreated(event.params.gameId)
   }
+  entity.status=2;
+  entity.save()
+}
 
-  entity.status=1;
+export function handleGameFinishedEvent(
+  event: GameFinishedEvent
+): void {
+  let entity = GameCreated.load(event.params.gameId);
+  if (entity == null) {
+    entity = new GameCreated(event.params.gameId)
+  }
+
+  entity.status=2;
   entity.save()
 }
 
