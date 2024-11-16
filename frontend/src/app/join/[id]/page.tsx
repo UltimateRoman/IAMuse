@@ -1,12 +1,65 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import login from "../../../images/login.png";
 import Image from "next/image";
 import upload from "../../../images/upload.png";
 import doodle from "../../../images/doodle.png";
 import { Button } from "../../components/ui/button";
 import elephant from "../../../images/elephant.jpeg";
+import { create } from "@web3-storage/w3up-client";
 
 const Page: React.FC = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [email, setEmail] = useState<string>("");
+  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+  const [cid, setCID] = useState(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log("file");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!selectedFile) {
+      alert("Please upload a file before submitting.");
+      return;
+    }
+    setShowEmailPrompt(true);
+  };
+
+  const handleEmailSubmit = async () => {
+    if (!email) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    try {
+      const client = await create();
+      // @ts-ignore
+      const account = await client.login(email);
+      await account.plan.wait();
+      const space = await client.createSpace("my-awesome-space", { account });
+
+      console.log("Space created:", space);
+
+      const files = [selectedFile];
+      //@ts-ignore
+      const imageCID = await client.uploadDirectory(files);
+
+      console.log("File uploaded successfully. Image CID:", imageCID);
+      alert(`File uploaded successfully. Image CID: ${imageCID}`);
+      //@ts-ignore
+      setCID(imageCID)
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("An error occurred while uploading the file. Please try again.");
+    }
+  };
+
+
   return (
     <div className="flex flex-col items-center justify-start px-4 py-6 space-y-6 bg-gray-50 min-h-screen">
       <div className="text-center">
@@ -63,17 +116,38 @@ const Page: React.FC = () => {
           id="file-upload"
           type="file"
           accept="image/*"
-          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          onChange={handleFileChange}
+          className="block text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         />
       </div>
-      <div className="w-full max-w-sm flex items-center justify-center">
-        <Button
-          variant="primary"
-          className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
-        >
-          Submit
-        </Button>
-      </div>
+      {showEmailPrompt ? (
+        <div className="w-full max-w-sm flex flex-col items-center space-y-4">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="block w-full text-black px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+          <Button
+            onClick={handleEmailSubmit}
+            variant="primary"
+            className="hover:text-white relative inline-flex p-1 mb-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+          >
+            Upload File
+          </Button>
+        </div>
+      ) : (
+        <div className="w-full max-w-sm flex items-center justify-center">
+          <Button
+            onClick={handleSubmit}
+            variant="primary"
+            className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+          >
+            Submit
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

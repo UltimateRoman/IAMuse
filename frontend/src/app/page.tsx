@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
+import createApolloClient from "./lib/appolo-client";
+import { gql } from "@apollo/client";
 
 const games = [
   {
@@ -45,6 +47,8 @@ const games = [
 
 const MainPage = () => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [gameIds, setGameIDs] = useState(null);
+
   const router = useRouter();
   const handleJoinClick = (id: string) => {
     router.push(`/join/${id}`);
@@ -56,9 +60,6 @@ const MainPage = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        gameId: "123123123n213",
-      }),
     });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -72,6 +73,31 @@ const MainPage = () => {
   const handlePromoteClick = (id: string) => {
     router.push(`/promote/${id}`);
   };
+
+  const appoloClient = async () => {
+    const client = createApolloClient();
+    const { data } = await client.query({
+      query: gql`
+        query gameCreateds {
+          gameCreateds {
+            id
+            gameId
+            game
+            metadataURI
+          }
+        }
+      `,
+    });
+    console.log(data);
+    setGameIDs(data);
+
+    
+
+  };
+
+  useEffect(() => {
+    appoloClient();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
