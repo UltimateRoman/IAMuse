@@ -29,4 +29,13 @@ contract GameController {
     function getPlayers(bytes32 gameId) public view returns (address[] memory) {
         return games[gameId].players;
     }
+
+    function getCids(bytes32 gameId) public view returns (string[] memory) {
+        address[] memory players = games[gameId].players;
+        string[] memory cids = new string[](players.length);
+        for (uint i = 0; i < players.length; i++) {
+            cids[i] = games[gameId].cids[players[i]];
+        }
+        return cids;
+    }
 }
