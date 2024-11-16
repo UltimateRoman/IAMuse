@@ -12,46 +12,17 @@ import { AvatarInterface } from "@circles-sdk/sdk";
 import { WalletContext } from "./lib/walletProvider";
 import { addPlayer } from "./lib/transaction";
 
-const games = [
-  {
-    id: 1,
-    title: "Game 1",
-    description: "This is the description for Game 1. Who are you betting on?",
-    challenger_1: "Challenger 1A",
-    challenger_2: "Challenger 1B",
-  },
-  {
-    id: "0xc028a14574ff806bda6bf664035b9cf263963a89976da1c0c37c97efc383cbfd",
-    title: "Game 2",
-    description: "This is the description for Game 2. Who are you betting on?",
-    challenger_1: "Challenger 2A",
-    // challenger_2 is missing
-  },
-  {
-    id: 3,
-    title: "Game 3",
-    description: "Do you want to join this game?",
-    // challengers are missing
-  },
-  {
-    id: 4,
-    title: "Game 4",
-    description: "This is the description for Game 4. Who are you betting on?",
-    challenger_1: "Challenger 4A",
-    challenger_2: "Challenger 4B",
-  },
-  {
-    id: 5,
-    title: "Game 5",
-    description: "This is the description for Game 5. Who are you betting on?",
-    challenger_1: "Challenger 5A",
-    // challenger_2 is missing
-  },
-];
+interface Game {
+  id: string;
+  gameId: string;
+  game: string;
+  metadataURI: string;
+  status: number;
+}
 
 const MainPage = () => {
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [gameIds, setGameIDs] = useState(null);
+  const [games, setGameIDs] = useState<Game[]>([]);
   const { sdk } = useContext(CirclesSDKContext);
   const [avatar, setAvatar] = useState<AvatarInterface>();
   const { smartAccount, isLoading } = useContext(WalletContext);
@@ -104,12 +75,13 @@ const MainPage = () => {
             gameId
             game
             metadataURI
+            status
           }
         }
       `,
     });
-    console.log("Appolo: ", data);
-    setGameIDs(data);
+    // console.log("Appolo: ", data);
+    setGameIDs(data.gameCreateds);
   };
 
   useEffect(() => {
@@ -180,36 +152,27 @@ const MainPage = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {games.map((game) => (
+          {games.map((game:Game) => (
             <Card
               key={game.id}
               className="transform hover:scale-105 transition-all duration-300 bg-gray-800 shadow-lg rounded-lg overflow-hidden"
             >
-              <CardHeader
-                title={game.title}
-                onDetailsClick={
-                  game.challenger_1 && game.challenger_2
-                    ? () => {
-                        console.log(`More details for ${game.title}`);
-                      }
-                    : undefined
-                }
-              ></CardHeader>
+              <CardHeader title={game.gameId}></CardHeader>
 
               <CardContent>
-                <p className="mb-4 text-gray-400">{game.description}</p>
+                <p className="mb-4 text-gray-400">{game.metadataURI}</p>
                 <div className="flex justify-between space-x-4 items-center">
-                  {game.challenger_1 && game.challenger_2 ? (
+                  {game.status == 1 ? (
                     <>
                       <div className="flex flex-col items-center">
                         <img
-                          src={`https://noun-api.com/beta/pfp?name=${game.challenger_1}`}
+                          src={`https://noun-api.com/beta/pfp?name=${game.gameId}1`}
                           alt="Avatar 1"
                           className="w-10 h-10 rounded-full mb-2"
                         />
                       </div>
                       <Button
-                        onClick={() => handlePromoteClick(`${game.id}`)}
+                        onClick={() => handlePromoteClick(`${game.gameId}`)}
                         variant="primary"
                         className="hover:text-white relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
                       >
@@ -217,20 +180,29 @@ const MainPage = () => {
                       </Button>
                       <div className="flex flex-col items-center">
                         <img
-                          src={`https://noun-api.com/beta/pfp?name=${game.challenger_2}`}
+                          src={`https://noun-api.com/beta/pfp?name=${game.gameId}2`}
                           alt="Avatar 2"
                           className="w-10 h-10 rounded-full mb-2"
                         />
                       </div>
                     </>
-                  ) : (
+                  ) : game.status == 0 ? (
                     <div className="flex w-full items-center justify-center ">
                       <Button
-                        onClick={() => handleJoinClick(`${game.id}`)}
+                        onClick={() => handleJoinClick(`${game.game}`)}
                         variant="primary"
                         className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
                       >
                         Join game
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex w-full items-center justify-center ">
+                      <Button
+                        variant="primary"
+                        className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+                      >
+                        Redeem 
                       </Button>
                     </div>
                   )}

@@ -1,64 +1,56 @@
+//@ts-nocheck
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { useParams } from "next/navigation";
-
-const games = [
-  {
-    id: 1,
-    title: "Game 1",
-    description: "This is the description for Game 1. Who won this match?",
-    videoUrl: "https://example.com/game1-video",
-  },
-  {
-    id: 2,
-    title: "Game 2",
-    description: "This is the description for Game 2. Who won this match?",
-    videoUrl: "https://example.com/game2-video",
-  },
-  {
-    id: 3,
-    title: "Game 3",
-    description: "This is the description for Game 3. Who won this match?",
-    videoUrl: "https://example.com/game3-video",
-  },
-  {
-    id: 4,
-    title: "Game 4",
-    description: "This is the description for Game 4. Who won this match?",
-    videoUrl: "https://example.com/game4-video",
-  },
-  {
-    id: 5,
-    title: "Game 5",
-    description: "This is the description for Game 5. Who won this match?",
-    videoUrl: "https://example.com/game5-video",
-  },
-];
+import createApolloClient from "../../lib/appolo-client";
+import { gql } from "@apollo/client";
 
 const MainPage = () => {
   const [challenger_1_Address, setChallenger_1_Address] = useState("address1");
   const [challenger_2_Address, setChallenger_2_Address] = useState("address2");
   const { id } = useParams();
-  console.log("id : ", id);
+  const [games, setGames] = useState(null);
+  // console.log("id : ", id);
+  const appoloClient = async () => {
+    const client = createApolloClient();
+    const { data } = await client.query({
+      query: gql`
+        query gameCreateds {
+          gameCreateds {
+            id
+            gameId
+            game
+            metadataURI
+            status
+          }
+        }
+      `,
+    });
+    // console.log("Games: ", data);
+    //@ts-ignore
+    setGames(data.gameCreateds.find((game) => game.gameId === id));
+    //@ts-ignore
+    console.log(data.gameCreateds.find((game) => game.gameId === id))
+  };
 
-  const gameToDisplay = games.find((game) => game.id.toString() === id);
+  useEffect(() => {
+    appoloClient();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
       <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {gameToDisplay ? (
+          {games ? (
             <Card
-              key={gameToDisplay.id}
+              key={games?.id}
               className="transform hover:scale-105 transition-all duration-300 bg-gray-800 shadow-xl rounded-lg overflow-hidden"
             >
-              <CardHeader title={gameToDisplay.title}></CardHeader>
+              <CardHeader title={games.gameId}></CardHeader>
               <CardContent>
-                <p className="mb-4 text-gray-300">
-                  {gameToDisplay.description}
-                </p>
+                <p className="mb-4 text-gray-300">{games.metadataURI}</p>
                 <div className="flex flex-col items-center mt-4 space-y-4">
                   <div className="flex justify-between items-center space-x-8">
                     <div className="flex flex-col items-center">

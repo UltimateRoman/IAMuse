@@ -35,7 +35,7 @@ export const CardHeader: React.FC<CardHeaderProps> = ({ title }) => {
         color: "#fff",
       }}
     >
-      <h2 className="text-lg font-semibold truncate">{title}</h2>
+      <h2 className="text-lg font-semibold truncate">Game {title}</h2>
     </div>
   );
 };
