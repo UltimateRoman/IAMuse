@@ -17,6 +17,24 @@ contract Game is AccessControlUpgradeable {
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
+    enum GameStatus {
+        CREATED,
+        BIDDING,
+        STARTED,
+        FINISHED
+    }
+
+    GameStatus public status = GameStatus.CREATED;
+
+    modifier onlyOracle() {
+        if (msg.sender != oracle) {
+            revert NotOracle();
+        }
+        _;
+    }
+
+    error NotOracle();
+
     constructor() {
         _disableInitializers();
     }
