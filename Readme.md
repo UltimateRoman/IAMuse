@@ -21,6 +21,12 @@ curl https://wapo-testnet.phala.network/ipfs/Qmc7zrN4Pen3ML7FHfoBEZpAosUjtK3fKBv
 
 ### Contract deployments
 
+**Gnosis Chiado**
+
+| Contract | Address  |
+| :----- | :- |
+| GameController | [`0xbda16b92cda4efdb6b059ed77b98bfcbda29973f`](https://gnosis-chiado.blockscout.com/address/0xbda16b92cda4efdb6b059ed77b98bfcbda29973f)|
+
 **Chiliz Spicy**
 
 | Contract | Address  |
