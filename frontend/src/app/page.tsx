@@ -11,7 +11,9 @@ import CirclesSDKContext from "./circles/circles";
 import { AvatarInterface } from "@circles-sdk/sdk";
 import { WalletContext } from "./lib/walletProvider";
 import { addPlayer } from "./lib/transaction";
-
+import GameABI from "../../../foundry/deployments/deployedContracts";
+import { WalletClient, createWalletClient, custom } from "viem";
+import { spicy } from "viem/chains";
 interface Game {
   id: string;
   gameId: string;
@@ -26,6 +28,26 @@ const MainPage = () => {
   const { sdk } = useContext(CirclesSDKContext);
   const [avatar, setAvatar] = useState<AvatarInterface>();
   const { smartAccount, isLoading } = useContext(WalletContext);
+  const [walletClient, setWalletClient] = useState<WalletClient>();
+
+  useEffect(() => {
+    async function init() {
+      if (!walletClient) {
+        const [account] = await window.ethereum!.request({
+          method: "eth_requestAccounts",
+        });
+        // console.log("ACCOUNT: ", account);
+        const client = createWalletClient({
+          account: account as `0x{string}`,
+          chain: spicy,
+          transport: custom(window.ethereum!),
+        });
+        await client.switchChain({ id: spicy.id });
+        setWalletClient(client);
+      }
+    }
+    init();
+  }, []);
 
   const router = useRouter();
   const handleJoinClick = (id: string) => {
@@ -53,6 +75,19 @@ const MainPage = () => {
   };
   const handlePromoteClick = (id: string) => {
     router.push(`/promote/${id}`);
+  };
+
+  const redeem = async (id: string) => {
+    // console.log("Contract address : ", id);
+    if (!walletClient) return;
+    const data = await walletClient.writeContract({
+      //@ts-ignore
+      address: id,
+      abi: GameABI["88882"].Game.abi,
+      functionName: "redeemWinnings",
+      args: [],
+    });
+    console.log("data : ", data);
   };
 
   const human = async () => {
@@ -219,6 +254,7 @@ const MainPage = () => {
                         ) : (
                           <div className="flex w-full items-center justify-center ">
                             <Button
+                              onClick={() => redeem(game.game)}
                               variant="primary"
                               className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
                             >

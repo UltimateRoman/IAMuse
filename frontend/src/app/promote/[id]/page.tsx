@@ -48,7 +48,6 @@ const MainPage = () => {
     setGames(data.gameCreateds.find((game) => game.game === id));
     // console.log(data.gameCreateds.find((game) => game.gameId === id))
   };
-  console.log("id : ", id);
   const [wagerAmount, setWagerAmount] = useState(0);
   // const {wagerSmartAccount} = useContext(WalletContext);
   const [walletClient, setWalletClient] = useState<WalletClient>();
@@ -59,7 +58,7 @@ const MainPage = () => {
         const [account] = await window.ethereum!.request({
           method: "eth_requestAccounts",
         });
-        console.log("ACCOUNT: ", account);
+        // console.log("ACCOUNT: ", account);
         const client = createWalletClient({
           account: account as `0x{string}`,
           chain: spicy,
