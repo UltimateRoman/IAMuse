@@ -57,7 +57,7 @@ const handleRequest = frames(async (ctx) => {
           }}
         >
           Join the excitement and promote your favorite contender in the
-          ultimate push-up challenge!
+          ultimate creativity competition!
         </h1>
 
         <div
