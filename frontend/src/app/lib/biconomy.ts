@@ -8,6 +8,10 @@ import {
   ECDSAOwnershipValidationModule,
   DEFAULT_ECDSA_OWNERSHIP_MODULE,
   SupportedSigner,
+  BiconomySmartAccountV2,
+  Transaction,
+  PaymasterMode,
+  UserOpReceipt,
 } from "@biconomy/account";
 import { sepolia } from "viem/chains";
 
@@ -41,4 +45,30 @@ export const createSmartAccount = async (walletClient: SupportedSigner) => {
     activeValidationModule: validationModule, // Use the `validationModule` we initialized above
   });
 };
+
+export async function sendTransaction(
+  smartAccount: BiconomySmartAccountV2,
+  tx: Transaction
+): Promise<UserOpReceipt> {
+  const userOpResponse = await smartAccount.sendTransaction(tx, {
+    paymasterServiceData: {
+      mode: PaymasterMode.SPONSORED,
+    },
+  });
+  if (!userOpResponse) {
+      throw new Error('Failed to send transaction');
+  }
+
+  const { transactionHash } = await userOpResponse.waitForTxHash();
+  console.log("Transaction Hash", transactionHash);
+  const userOpReceipt = await userOpResponse.wait();
+  if (userOpReceipt.success == "true") {
+    console.log("UserOp receipt", userOpReceipt);
+    console.log("Transaction receipt", userOpReceipt.receipt);
+  } else {
+    console.error("Transaction Failed: ", userOpReceipt.logs);
+    // throw new Error('Failed to send transaction');
+  }
+    return userOpReceipt;
+}
 

@@ -1,6 +1,10 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+"use client";
+
+import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
 import { BrowserProviderContractRunner } from "@circles-sdk/adapter-ethers";
 import { CirclesConfig, Sdk } from '@circles-sdk/sdk';
+import { WalletContext } from "../lib/walletProvider";
+import { BiconomySdkContractRunner } from "./biconomyAdapter";
 
 interface CirclesSDKContextType {
     sdk: Sdk | null;
@@ -32,12 +36,12 @@ interface CirclesSDKProps {
 }
 
 export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
+    const {smartAccount, isLoading, ethersProvider} = useContext(WalletContext);
     const [sdk, setSdk] = useState<any|null>(null);
     const [isConnected, setIsConnected] = useState(false);
     const [adapter, setAdapter] = useState<any | null>(null);
     const [circlesProvider, setCirclesProvider] = useState<any | null>(null);
     const [circlesAddress, setCirclesAddress] = useState<any | null>(null);
-
     const chiadoConfig: CirclesConfig = {
         circlesRpcUrl: "https://chiado-rpc.aboutcircles.com",
         pathfinderUrl: "https://chiado-pathfinder.aboutcircles.com",
@@ -54,27 +58,38 @@ export const CirclesSDK: React.FC<CirclesSDKProps> = ({ children }) => {
     // Function to initialize the SDK
     const initSdk = useCallback(async () => {
         try {
-            const adapter = new BrowserProviderContractRunner();
-            await adapter.init(); // Initialize the adapter before using it
+            if (isLoading || !smartAccount || !ethersProvider) return;
+            const adapter = new BiconomySdkContractRunner(
+                smartAccount, 
+                await smartAccount?.getAccountAddress(),
+                ethersProvider
+
+            );
             
             setAdapter(adapter); // Set the adapter in the state
 
             const circlesProvider = adapter.provider;
             setCirclesProvider(circlesProvider); // Store the provider
             
-            const circlesAddress = await adapter.address;
+            const circlesAddress = adapter.address;
             setCirclesAddress(circlesAddress); // Set the address
             
             const sdk = new Sdk(adapter, chiadoConfig); // Pass the initialized adapter to the SDK
+            console.log(sdk);
             setSdk(sdk); // Set the SDK in the state
             setIsConnected(true); // Update connection status
             console.log("Circles is working")
+            const avatar = await sdk.registerHuman();
+            console.log("Got avatar")
+            console.log(avatar)
+            console.log(JSON.stringify(avatar))
         } catch (error) {
             console.error("Error initializing SDK:", error);
         }
-    }, []);
+    }, [isLoading, smartAccount]);
 
     useEffect(() => {
+        console.log("Initializing sdk")
         initSdk(); // Call initSdk when the component mounts
     }, [initSdk]);
 
