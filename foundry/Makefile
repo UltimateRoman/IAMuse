@@ -21,6 +21,8 @@ build:
 deploy:
 	@if [ "$(RPC_URL)" = "localhost" ]; then \
 		forge script script/Deploy.s.sol --rpc-url localhost --password 'localhost' --broadcast --legacy --ffi; \
+	elif [ "$(RPC_URL)" = "chiado" ]; then \
+		forge script script/DeployController.s.sol --rpc-url $(RPC_URL) --broadcast --legacy --ffi; \
 	else \
 		forge script script/Deploy.s.sol --rpc-url $(RPC_URL) --broadcast --legacy --ffi; \
 	fi
@@ -60,6 +62,8 @@ compile:
 deploy-verify:
 	@if [ "$(RPC_URL)" = "localhost" ]; then \
 		forge script script/Deploy.s.sol --rpc-url localhost --password localhost --broadcast --legacy --ffi --verify; \
+	elif [ "$(RPC_URL)" = "chiado" ]; then \
+		forge script script/DeployController.s.sol --rpc-url $(RPC_URL) --broadcast --legacy --ffi; \
 	else \
 		forge script script/Deploy.s.sol --rpc-url $(RPC_URL) --broadcast --legacy --ffi --verify; \
 	fi

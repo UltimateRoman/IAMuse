@@ -12,6 +12,11 @@ contract Game is AccessControlUpgradeable {
     address public oracle;
     string public metadataURI;
 
+    bytes32 conditionId;
+    uint256[] positionIds;
+    uint256[] partitions;
+    bytes32[] collectionIds;
+
     IERC20 token;
     IConditionalTokens conditionalTokens;
 
@@ -57,6 +62,25 @@ contract Game is AccessControlUpgradeable {
         __AccessControl_init();
         _grantRole(DEFAULT_ADMIN_ROLE, _oracle);
         _grantRole(OPERATOR_ROLE, _oracle);
+    }
+
+    function prepareForBidding(uint256 outcomeSlotCount) external onlyRole(OPERATOR_ROLE) {
+        conditionId = conditionalTokens.getConditionId(oracle, gameId, outcomeSlotCount);
+        conditionalTokens.prepareCondition(oracle, gameId, outcomeSlotCount);
+
+        for (uint8 i = 0; i < outcomeSlotCount; i++) {
+            uint256 indexSet = 1 << i;
+
+            bytes32 collectionId = conditionalTokens.getCollectionId(bytes32(0), conditionId, indexSet);
+            collectionIds.push(collectionId);
+
+            uint256 positionId = conditionalTokens.getPositionId(token, collectionId);
+            positionIds.push(positionId);
+
+            partitions.push(indexSet);
+        }
+
+        status = GameStatus.BIDDING;
     }
 
     function setMetadataURI(string calldata _metadataURI) external {
