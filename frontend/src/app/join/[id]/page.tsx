@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 import login from "../../../images/login.png";
 import Image from "next/image";
@@ -61,7 +62,19 @@ const Page: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col items-center justify-start px-4 py-6 space-y-6 bg-gray-50 min-h-screen">
+    <div className="flex flex-col items-center w-full justify-start px-4 py-6 space-y-6 bg-gray-50 min-h-screen">
+        <div className="flex w-full justify-end items-center mb-8 sm:mb-12">
+          <div className="flex justify-end items-center">
+            <Link
+              href="/"
+              className="relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+            >
+              <span className="relative px-6 py-3 transition-all ease-in duration-75 bg-white hover:text-white rounded-full group-hover:bg-opacity-0">
+                Home
+              </span>
+            </Link>
+          </div>
+        </div>
       <div className="text-center">
         <a
           href={elephant.src}
