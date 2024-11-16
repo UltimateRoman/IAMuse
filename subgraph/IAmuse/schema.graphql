@@ -6,6 +6,7 @@ type GameCreated @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  status:Int
 }
 
 type OwnershipTransferred @entity(immutable: true) {

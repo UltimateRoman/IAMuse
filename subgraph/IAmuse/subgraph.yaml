@@ -24,6 +24,23 @@ dataSources:
       eventHandlers:
         - event: GameCreated(bytes32,address,string)
           handler: handleGameCreated
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
       file: ./src/game-factory.ts
+templates:
+  - name: Game
+    kind: ethereum/contract
+    network: chiliz-testnet
+    source:
+      abi: Game
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/game-factory.ts
+      entities:
+        - Game
+      abis:
+        - name: Game
+          file: ./abis/Game.json
+      eventHandlers:
+        - event: PreparedForBidding(uint256)
+          handler: handlePrepareForBidding
