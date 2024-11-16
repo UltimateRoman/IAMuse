@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader } from "../../components/ui/card";
 import { useParams } from "next/navigation";
 import createApolloClient from "../../lib/appolo-client";
 import { gql } from "@apollo/client";
+import { createWalletClient, custom, Hex, WalletClient } from "viem";
+import { spicy } from "viem/chains";
+import { approve, placeWagerWalletClient } from "@/app/lib/transaction";
 
 const MainPage = () => {
   const [challenger_1_Address, setChallenger_1_Address] = useState("address1");
@@ -32,6 +35,40 @@ const MainPage = () => {
     //@ts-ignore
     setGames(data.gameCreateds.find((game) => game.gameId === id));
     // console.log(data.gameCreateds.find((game) => game.gameId === id))
+  }
+  console.log("id : ", id);
+  const [wagerAmount, setWagerAmount] = useState(0)
+  // const {wagerSmartAccount} = useContext(WalletContext);
+  const [walletClient, setWalletClient] = useState<WalletClient>()
+
+
+  useEffect(() => {
+      async function init() {
+          if (!walletClient) {
+              const [account] = await window.ethereum!.request({ method: 'eth_requestAccounts' })
+              console.log("ACCOUNT: ", account);
+              const client = createWalletClient({
+                  account: account as `0x{string}`,
+                  chain: spicy,
+                  transport: custom(window.ethereum!)
+              })
+              await client.switchChain({ id: spicy.id })
+              setWalletClient(client)
+          }
+      }
+      init();
+  }, []);
+
+  const handlePromoterChallenger = async  (challengerId: number) => {
+      // if (!wagerSmartAccount) return;
+      if (!walletClient) return;
+      await approve(walletClient, wagerAmount)
+      await placeWagerWalletClient(id as Hex, walletClient, challengerId, wagerAmount)
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setWagerAmount(value === '' ? 0 : parseFloat(value));
   };
 
   useEffect(() => {
@@ -61,6 +98,8 @@ const MainPage = () => {
                     </div>
                     <div className="flex items-center">
                       <input
+                        onChange={handleChange}
+                        value={wagerAmount ?? '0'}
                         type="number"
                         placeholder="Enter your input"
                         className="w-full max-w-sm px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -76,12 +115,14 @@ const MainPage = () => {
                   </div>
                   <div className="flex justify-between items-center w-full space-x-8">
                     <Button
+                      onClick={() => handlePromoterChallenger(0)}
                       variant="primary"
                       className="hover:text-white relative inline-flex p-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 bg-gray-200"
                     >
                       Promote Challenger 1
                     </Button>
                     <Button
+                      onClick={() => handlePromoterChallenger(1)}
                       variant="primary"
                       className="hover:text-white relative inline-flex p-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 bg-gray-200"
                     >

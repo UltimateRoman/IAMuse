@@ -1,17 +1,15 @@
 "use client";
 
-import {
-  BiconomySmartAccountV2,
-} from "@biconomy/account";
-import { encodeFunctionData } from "viem";
+import { BiconomySmartAccountV2 } from "@biconomy/account";
+import { Abi, encodeFunctionData, Hex, WalletClient } from "viem";
 import GameABI from "../../../../foundry/deployments/deployedContracts";
-import {sendTransaction} from '../lib/biconomy'
+import { sendTransaction } from "../lib/biconomy";
 
 export async function addPlayer(
   smartAccount: BiconomySmartAccountV2,
-  gameId: string
+  gameId: string,
 ) {
-    console.log("game id : ",gameId);
+  console.log("game id : ", gameId);
   const encodedCall = encodeFunctionData({
     abi: GameABI["10200"].GameController.abi,
     functionName: "joinGame",
@@ -24,19 +22,48 @@ export async function addPlayer(
   await sendTransaction(smartAccount, transaction);
 }
 
-export async function getPlayers(
+export async function placeBet(
   smartAccount: BiconomySmartAccountV2,
-  gameId: string
+  playerId: number,
+  betAmount: number,
 ) {
-    console.log("game id : ",gameId);
+  console.log("betAmount : ", betAmount);
   const encodedCall = encodeFunctionData({
-    abi: GameABI["10200"].GameController.abi,
-    functionName: "getPlayers",
-    args: [gameId as any],
+    abi: GameABI["88882"].Game.abi,
+    functionName: "placeBet",
+    args: [playerId as any, betAmount as any],
   });
   const transaction = {
-    to: GameABI["10200"].GameController.address,
+    to: "0x26a1253fb1b881554eb95cb487d1a5ee5593ec0b",
     data: encodedCall,
   };
   await sendTransaction(smartAccount, transaction);
+}
+
+export async function placeWagerWalletClient(
+    gameAddress: Hex,
+  walletClient: WalletClient,
+  playerId: number,
+  betAmount: number,
+) {
+  // console.log([BigInt(playerId),BigInt(betAmount)])
+  await walletClient.writeContract({
+    address: gameAddress,
+    abi: GameABI["88882"].Game.abi as Abi,
+    functionName: "placeBet",
+    args: [BigInt(playerId), BigInt(betAmount)],
+  } as any);
+}
+
+export async function approve(walletClient: WalletClient, betAmount: number) {
+  console.log("betAmount : ", betAmount);
+  await walletClient.writeContract({
+    address: "0x3c0b62de72281f462f05f489154a979fbbb842c9" as Hex,
+    abi: GameABI["88882"].Token.abi as Abi,
+    functionName: "approve",
+    args: [
+      "0x26a1253fb1b881554eb95cb487d1a5ee5593ec0b",
+      BigInt(betAmount * 10 ** 18),
+    ],
+  } as any);
 }

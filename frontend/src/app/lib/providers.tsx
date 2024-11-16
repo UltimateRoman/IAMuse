@@ -4,24 +4,54 @@ import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import { WalletProvider } from "./walletProvider";
 import {CirclesSDK} from '../circles/circles'
-import { chain } from "./chain";
+
+import { spicy, gnosisChiado, gnosis } from "viem/chains";
 
 const evmNetworks = [
-    {
-        blockExplorerUrls: [chain.blockExplorers.default.url ],
-        chainId: chain.id,
-        chainName: chain.name,
-        iconUrls: ["https://app.dynamic.xyz/assets/networks/gnosis.svg"],
-            name: chain.name,
-        nativeCurrency: {
-            ...chain.nativeCurrency,
-            iconUrl: 'https://app.dynamic.xyz/assets/networks/gnosis.svg',
-        },
-            networkId: chain.id,
-            rpcUrls: [chain.rpcUrls.default.http[0]],
-            vanityName: chain.name,
+  {
+    blockExplorerUrls: [gnosisChiado.blockExplorers.default.url],
+    chainId: gnosisChiado.id,
+    chainName: gnosisChiado.name,
+    iconUrls: ["https://app.dynamic.xyz/assets/networks/gnosis.svg"],
+    name: gnosisChiado.name,
+    nativeCurrency: {
+      ...gnosisChiado.nativeCurrency,
+      iconUrl: "https://app.dynamic.xyz/assets/networks/gnosis.svg",
     },
-]
+    networkId: gnosisChiado.id,
+    rpcUrls: [gnosisChiado.rpcUrls.default.http[0]],
+    vanityName: gnosisChiado.name,
+  },
+  {
+    blockExplorerUrls: [gnosis.blockExplorers.default.url],
+    chainId: gnosis.id,
+    chainName: gnosis.name,
+    iconUrls: ["https://app.dynamic.xyz/assets/networks/gnosis.svg"],
+    name: gnosis.name,
+    nativeCurrency: {
+      ...gnosis.nativeCurrency,
+      iconUrl: "https://app.dynamic.xyz/assets/networks/gnosis.svg",
+    },
+    networkId: gnosis.id,
+    rpcUrls: [gnosis.rpcUrls.default.http[0]],
+    vanityName: gnosis.name,
+  },
+  {
+    blockExplorerUrls: [spicy.blockExplorers.default.url],
+    chainId: spicy.id,
+    chainName: spicy.name,
+    iconUrls: ["https://app.dynamic.xyz/assets/networks/gnosis.svg"],
+    name: spicy.name,
+    nativeCurrency: {
+      ...spicy.nativeCurrency,
+      iconUrl: "https://app.dynamic.xyz/assets/networks/gnosis.svg",
+    },
+    networkId: spicy.id,
+    rpcUrls: [spicy.rpcUrls.default.http[0]],
+    vanityName: spicy.name,
+  },
+];
+
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
