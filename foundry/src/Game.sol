@@ -188,6 +188,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
         status = GameStatus.FINISHED;
 
         token.transfer(_winnerAddress, (totalBetAmount * WINNER_PAYOUT) / 100);
+        contractRewardBalance = token.balanceOf(address(this));
         emit GameFinished(gameId, winnerId);
     }
 
@@ -202,7 +203,6 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
             ""
         );
         conditionalTokens.redeemPositions(token, bytes32(0), conditionId, partitions);
-        contractRewardBalance = token.balanceOf(address(this));
         uint256 additionalReward = (contractRewardBalance * (100 - WINNER_PAYOUT) * balance) / (100 * totalBetAmount);
 
         token.transfer(msg.sender, balance + additionalReward);

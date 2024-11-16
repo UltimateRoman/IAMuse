@@ -11,7 +11,7 @@ import "./DeployHelpers.s.sol";
 contract DeployContracts is ScaffoldETHDeploy {
   // use `deployer` from `ScaffoldETHDeploy`
   function run() external ScaffoldEthDeployerRunner {
-    address owner = msg.sender;
+    address owner = 0xAf88d636F6F30dD40B61E7Ef05d7DE3d4d86F175;
 
     Game game = new Game();
     console.logString(

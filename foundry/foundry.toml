@@ -28,12 +28,14 @@ pgn = "https://rpc.publicgoods.network"
 pgnTestnet = "https://sepolia.publicgoods.network"
 fhenixNitrogen = "https://api.nitrogen.fhenix.zone/"
 chilizSpicy = "https://spicy-rpc.chiliz.com/"
+flowTestnet = "https://testnet.evm.nodes.onflow.org"
 
 [etherscan]
 polygonMumbai = { key = "${ETHERSCAN_API_KEY}" }
 sepolia = { key = "${ETHERSCAN_API_KEY}" }
-chilizSpicy = { key = "verifyContract", url = "https://api.routescan.io/v2/network/testnet/evm/88882/etherscan", chain = 88882 }
+chilizSpicy = { key = "verifyContract", url = "https://spicy-explorer.chiliz.com/api", chain = 88882 }
 chiado = { key = "verifyContract", url = "https://gnosis-chiado.blockscout.com/api", chain = 10200 }
+flowTestnet = { key = "verifyContract", url = "https://evm-testnet.flowscan.io/api", chain = 545 }
 
 
 [fmt]
