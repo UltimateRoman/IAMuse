@@ -59,7 +59,6 @@ const handleRequest = frames(async (ctx) => {
             <h2 tw="text-4xl font-semibold mb-4">{contender.name}</h2>
             <hr tw="w-3/4 border-t-2 border-white mb-4" />
             <p tw="text-3xl mb-2">Creativity: {contender.creativity}</p>
-            <p tw="text-3xl mb-2">ID: {gameId}</p>
           </div>
         ))}
       </div>

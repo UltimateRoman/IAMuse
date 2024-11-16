@@ -92,6 +92,16 @@ const MainPage = () => {
     // human();
   }, [sdk]);
 
+  const sortedGames = games.reduce(
+    (acc, game) => {
+      if (game.status === 0) acc[0].push(game);
+      else if (game.status === 1) acc[1].push(game);
+      else acc[2].push(game);
+      return acc;
+    },
+    { 0: [] as Game[], 1: [] as Game[], 2: [] as Game[] }
+  );
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       {alertMessage && (
@@ -151,64 +161,77 @@ const MainPage = () => {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {games.map((game:Game) => (
-            <Card
-              key={game.id}
-              className="transform hover:scale-105 transition-all duration-300 bg-gray-800 shadow-lg rounded-lg overflow-hidden"
-            >
-              <CardHeader title={game.gameId}></CardHeader>
+        <div className="space-y-12">
+          {Object.entries(sortedGames).map(([status, gamesForStatus]) => (
+            <div key={status}>
+              <h2 className="text-2xl font-bold mb-6 text-gray-300">
+                {status === "0"
+                  ? "Open Games"
+                  : status === "1"
+                  ? "Active Games"
+                  : "Completed Games"}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {gamesForStatus.map((game) => (
+                  <Card
+                    key={game.id}
+                    className="transform hover:scale-105 transition-all duration-300 bg-gray-800 shadow-lg rounded-lg overflow-hidden"
+                  >
+                    <CardHeader title={game.gameId}></CardHeader>
 
-              <CardContent>
-                <p className="mb-4 text-gray-400">{game.metadataURI}</p>
-                <div className="flex justify-between space-x-4 items-center">
-                  {game.status == 1 ? (
-                    <>
-                      <div className="flex flex-col items-center">
-                        <img
-                          src={`https://noun-api.com/beta/pfp?name=${game.gameId}1`}
-                          alt="Avatar 1"
-                          className="w-10 h-10 rounded-full mb-2"
-                        />
+                    <CardContent>
+                      <p className="mb-4 text-gray-400">{game.metadataURI}</p>
+                      <div className="flex justify-between space-x-4 items-center">
+                        {game.status == 1 ? (
+                          <>
+                            <div className="flex flex-col items-center">
+                              <img
+                                src={`https://noun-api.com/beta/pfp?name=${game.gameId}1`}
+                                alt="Avatar 1"
+                                className="w-10 h-10 rounded-full mb-2"
+                              />
+                            </div>
+                            <Button
+                              onClick={() => handlePromoteClick(`${game.game}`)}
+                              variant="primary"
+                              className="hover:text-white relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+                            >
+                              Promote a player
+                            </Button>
+                            <div className="flex flex-col items-center">
+                              <img
+                                src={`https://noun-api.com/beta/pfp?name=${game.gameId}2`}
+                                alt="Avatar 2"
+                                className="w-10 h-10 rounded-full mb-2"
+                              />
+                            </div>
+                          </>
+                        ) : game.status == 0 ? (
+                          <div className="flex w-full items-center justify-center ">
+                            <Button
+                              onClick={() => handleJoinClick(`${game.game}`)}
+                              variant="primary"
+                              className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+                            >
+                              Join game
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex w-full items-center justify-center ">
+                            <Button
+                              variant="primary"
+                              className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
+                            >
+                              Redeem
+                            </Button>
+                          </div>
+                        )}
                       </div>
-                      <Button
-                        onClick={() => handlePromoteClick(`${game.game}`)}
-                        variant="primary"
-                        className="hover:text-white relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
-                      >
-                        Promote a player
-                      </Button>
-                      <div className="flex flex-col items-center">
-                        <img
-                          src={`https://noun-api.com/beta/pfp?name=${game.gameId}2`}
-                          alt="Avatar 2"
-                          className="w-10 h-10 rounded-full mb-2"
-                        />
-                      </div>
-                    </>
-                  ) : game.status == 0 ? (
-                    <div className="flex w-full items-center justify-center ">
-                      <Button
-                        onClick={() => handleJoinClick(`${game.game}`)}
-                        variant="primary"
-                        className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
-                      >
-                        Join game
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="flex w-full items-center justify-center ">
-                      <Button
-                        variant="primary"
-                        className="hover:text-white relative inline-flex p-1 mb-2 me-2 overflow-hidden text-base font-extrabold border-gray-600 hover:bg-gray-700 w-1/2 bg-gray-200"
-                      >
-                        Redeem 
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
