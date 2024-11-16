@@ -21,6 +21,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
 
     IERC20 token;
     IConditionalTokens conditionalTokens;
+    mapping(address => uint256) bets;
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
 
@@ -69,6 +70,7 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
     }
 
     event PreparedForBidding(uint256 outcomeSlotCount);
+    event PlacedBet(address wagerer, uint256 playerId, uint256 amount);
 
     error NotOracle();
     error NotStarted();
@@ -127,6 +129,31 @@ contract Game is IERC1155Receiver, AccessControlUpgradeable {
 
         status = GameStatus.BIDDING;
         emit PreparedForBidding(outcomeSlotCount);
+    }
+
+    function placeBet(uint256 playerId, uint256 betAmount) external inBidding {
+        token.transferFrom(msg.sender, address(this), betAmount);        
+
+        token.approve(address(conditionalTokens), betAmount);
+
+        conditionalTokens.splitPosition(
+            token,
+            bytes32(0),
+            conditionId,
+            partitions,
+            betAmount
+        );
+
+        IERC1155(address(conditionalTokens)).safeTransferFrom(
+            address(this),
+            msg.sender,
+            positionIds[playerId],
+            betAmount,
+            ""
+        );
+
+        bets[msg.sender] += betAmount;
+        emit PlacedBet(msg.sender, playerId, betAmount);
     }
 
     function setMetadataURI(string calldata _metadataURI) external {
