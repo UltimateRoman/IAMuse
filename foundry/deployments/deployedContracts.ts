@@ -6,7 +6,7 @@
 const deployedContracts = {
   545: {
     Game: {
-      address: "0xf21048d186f0b96263851d9183b276aa32bd7e55",
+      address: "0x37ce7eF05E7D93EeD602bB3A5352BC625578862C",
       abi: [
         {
           type: "constructor",
@@ -794,7 +794,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     Token: {
-      address: "0xbda16b92cda4efdb6b059ed77b98bfcbda29973f",
+      address: "0xd3d940D07Cea99E1aDc52dF368DfBA87558DE637",
       abi: [
         {
           type: "constructor",
@@ -1630,7 +1630,7 @@ const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0xaa3117cb5e45c6b4aceafb7d2aa011435f3cce92",
+      address: "0xaA3117cb5E45C6b4ACEaFb7D2AA011435f3cCe92",
       abi: [
         {
           type: "constructor",
@@ -2547,7 +2547,7 @@ const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0x37ce7ef05e7d93eed602bb3a5352bc625578862c",
+      address: "0x216205E0EEDAdcc15ee46D0965E217BCF91E881D",
       abi: [
         {
           type: "constructor",
