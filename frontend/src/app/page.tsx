@@ -144,7 +144,7 @@ const MainPage = () => {
           <DynamicWidget />
           <div className="flex justify-between items-center">
             <Link
-              href="/chat"
+              href="https://converse.xyz/dm/0x3e4E61df9Aa2025413f31dBE97e890f51412E41c"
               className="relative inline-flex items-center justify-center p-1 mb-2 me-2 overflow-hidden text-base font-extrabold text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
             >
               <span className="relative px-6 py-3 transition-all ease-in duration-75 bg-white hover:text-white rounded-full group-hover:bg-opacity-0">
