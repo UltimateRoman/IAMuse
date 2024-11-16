@@ -1772,12 +1772,12 @@ const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "address",
+              internalType: "contract IERC20",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "address",
+              internalType: "contract IConditionalTokens",
             },
           ],
           stateMutability: "nonpayable",
@@ -2041,7 +2041,7 @@ const deployedContracts = {
   },
   88882: {
     Token: {
-      address: "0xbda16b92cda4efdb6b059ed77b98bfcbda29973f",
+      address: "0xd3d940d07cea99e1adc52df368dfba87558de637",
       abi: [
         {
           type: "constructor",
@@ -2877,7 +2877,7 @@ const deployedContracts = {
       },
     },
     ConditionalTokens: {
-      address: "0xaa3117cb5e45c6b4aceafb7d2aa011435f3cce92",
+      address: "0x216205e0eedadcc15ee46d0965e217bcf91e881d",
       abi: [
         {
           type: "constructor",
@@ -3794,7 +3794,7 @@ const deployedContracts = {
       },
     },
     GameFactory: {
-      address: "0x37ce7ef05e7d93eed602bb3a5352bc625578862c",
+      address: "0x38c84b0c4561bee70b8e028561fb664543e1ad40",
       abi: [
         {
           type: "constructor",
@@ -3807,12 +3807,12 @@ const deployedContracts = {
             {
               name: "_token",
               type: "address",
-              internalType: "address",
+              internalType: "contract IERC20",
             },
             {
               name: "_conditionalTokens",
               type: "address",
-              internalType: "address",
+              internalType: "contract IConditionalTokens",
             },
           ],
           stateMutability: "nonpayable",

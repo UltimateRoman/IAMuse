@@ -28,7 +28,7 @@ contract DeployContracts is ScaffoldETHDeploy {
     );
 
     GameFactory gameFactory = new GameFactory(
-      owner, address(token), address(conditionalTokens));
+      owner, IERC20(address(token)),  IConditionalTokens(address(conditionalTokens)));
     console.logString(
       string.concat(
         "GameFactory deployed at: ", vm.toString(address(gameFactory))
