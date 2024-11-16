@@ -20,7 +20,7 @@ export async function initializeDatabase() {
 
 export async function insertGame(gameId: string, gameCreateTime: string) {
   const db = await dbPromise;
-  await db.run('INSERT INTO games (gameId, gameCreateTime) VALUES (?, ?)', [gameId, gameCreateTime]);
+  await db.run('INSERT INTO games (gameId, gameCreateTime, gameFinalized) VALUES (?, ?, ?)', [gameId, gameCreateTime, 0]);
 }
 
 export async function getGames() {
