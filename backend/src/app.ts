@@ -114,7 +114,7 @@ app.post('/createGame', async (req, res) => {
 
 app.post('/finishGame', async (req, res) => {
     const { gameAddress, winnerAddress, winnerId, chainId } = req.body;
-    await callFinishGame(winnerId, winnerAddress, gameAddress, chainId)
+    await callFinishGame(winnerAddress, gameAddress, chainId)
     res.json({ gameAddress: gameAddress });
 });
 
