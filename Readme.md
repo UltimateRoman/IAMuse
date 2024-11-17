@@ -4,9 +4,9 @@ IAmuse aspires to be a platform that can be used to derive the value of any item
 
 ## Hackathon Use Case
 
-In the eth global hack we plan to showcase how this can platform can be used to provide an interesting community activity, at the same time also allow for valuation of nouns.wtf art. 
+The project showcases a use-case for such a model with a unique PvP game where two contenders face off, showcasing their assets in a dynamic, wager-based environment. The platform allows players to pit their digital assets (like Nouns DAO NFTs, CryptoPunks, MEME's or any collectible art) against each other in PvP (Player vs. Player) battles, where the community wagers on the potential winner. It utilizes AI-powered valuation wherein the winner is determined not by human opinion or market trends alone, but by an LLM that evaluates the art based on a complex mix of aesthetic qualities, community sentiment, rarity, and other factors.
 
-The below excalidraw represents the application that we plan to build using circles ubi / kinto.xyz since they provide us with some form of sybil resistance.
+Wagerers can place bets and receive a share of tokens based on the winning contender. The winner of the challenge also receives a share from the betting pool.
 
 
 <p align="center">
