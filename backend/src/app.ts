@@ -90,7 +90,7 @@ app.post('/createGame', async (req, res) => {
 
     const response = await axios.get(process.env.PHALA_URL||'', {
         params: {
-            key: '1ddc090cfb263f49',
+            key: process.env.PHALA_KEY,
             type: 'challenge'
         }
     });
@@ -112,7 +112,6 @@ app.post('/createGame', async (req, res) => {
     res.json({ gameId: game.gameId });
 });
 
-//'{"gameAddress": "0x47a6995d49d6f75c6ac074cb8a98a41bcfe3e049", "winnerAddress":"0xc5a5F537d8861143EFa4DD1585B44A90C3de1953", "winnerId":1, "chainId":88882}'
 app.post('/finishGame', async (req, res) => {
     const { gameAddress, winnerAddress, winnerId, chainId } = req.body;
     await callFinishGame(winnerId, winnerAddress, gameAddress, chainId)
@@ -204,7 +203,7 @@ async function callFinishGame(winnerAddress:string, gameAddress:string, chainId:
 
         const response = await axios.post(process.env.PHALA_URL||'', {
             params: {
-                key: '1ddc090cfb263f49'
+                key: process.env.PHALA_KEY
             },
             headers: {
                 'Content-Type': 'application/json'
