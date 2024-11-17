@@ -10,7 +10,7 @@ The below excalidraw represents the application that we plan to build using circ
 
 
 <p align="center">
-  <img src="assets/IAmuse.png" alt="IAmuse" style="width: 100%;" />
+  <img src="assets/IAmuse-sequence.png" alt="IAmuse sequence" style="width: 100%;" />
 </p>
 
 
